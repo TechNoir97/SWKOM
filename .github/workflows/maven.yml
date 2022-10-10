@@ -16,10 +16,10 @@ jobs:
     - name: Step 1 - Checkout master branch from Github
       uses: actions/checkout@v3
       
-    - name: Step 2 - Set up JDK 17
+    - name: Step 2 - Set up JDK 19
       uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: '19'
         distribution: 'openJDK'
         cache: maven
         
