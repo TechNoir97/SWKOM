@@ -1,4 +1,4 @@
-package at.fhtw.swen3.persistence;
+package at.fhtw.swen3.services.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,34 +8,33 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.*;
 
 /**
- * Error
+ * NewParcelInfo
  */
 @Validated
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Error   {
-  @JsonProperty("errorMessage")
-  private String errorMessage = null;
+public class NewParcelInfo   {
+  @JsonProperty("trackingId")
+  private String trackingId = null;
 
-  public Error errorMessage(String errorMessage) {
-    this.errorMessage = errorMessage;
+  public NewParcelInfo trackingId(String trackingId) {
+    this.trackingId = trackingId;
     return this;
   }
 
   /**
-   * The error message.
-   * @return errorMessage
+   * The tracking ID of the parcel. 
+   * @return trackingId
    **/
-  @Schema(required = true, description = "The error message.")
-      @NotNull
-
-    public String getErrorMessage() {
-    return errorMessage;
+  @Schema(example = "PYJRB4HZ6", description = "The tracking ID of the parcel. ")
+  
+  @Pattern(regexp="^[A-Z0-9]{9}$")   public String getTrackingId() {
+    return trackingId;
   }
 
-  public void setErrorMessage(String errorMessage) {
-    this.errorMessage = errorMessage;
+  public void setTrackingId(String trackingId) {
+    this.trackingId = trackingId;
   }
 
 
@@ -47,21 +46,21 @@ public class Error   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Error error = (Error) o;
-    return Objects.equals(this.errorMessage, error.errorMessage);
+    NewParcelInfo newParcelInfo = (NewParcelInfo) o;
+    return Objects.equals(this.trackingId, newParcelInfo.trackingId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(errorMessage);
+    return Objects.hash(trackingId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Error {\n");
+    sb.append("class NewParcelInfo {\n");
     
-    sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
+    sb.append("    trackingId: ").append(toIndentedString(trackingId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

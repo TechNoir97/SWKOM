@@ -1,6 +1,7 @@
-package at.fhtw.swen3.persistence;
+package at.fhtw.swen3.services.dto;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Warehouse extends Hop  {
+public class Warehouse extends Hop {
   @JsonProperty("level")
   private Integer level = null;
 
