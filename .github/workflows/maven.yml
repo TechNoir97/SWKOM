@@ -21,7 +21,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'openjdk'
-        
+
         
     - name: Step 3 - Build with Maven
       run: mvn -B package --file pom.xml
