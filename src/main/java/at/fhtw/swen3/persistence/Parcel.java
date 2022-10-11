@@ -59,13 +59,7 @@ public class Parcel {
     }
 
     private StateEnum state;
-
-    @JsonProperty("visitedHops")
-    @Valid
     private List<HopArrival> visitedHops = new ArrayList<HopArrival>();
-
-    @JsonProperty("futureHops")
-    @Valid
     private List<HopArrival> futureHops = new ArrayList<HopArrival>();
 
 }
