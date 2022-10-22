@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class HopArrival   {
+public class HopArrivalDTO {
   @JsonProperty("code")
   private String code = null;
 
@@ -25,7 +25,7 @@ public class HopArrival   {
   @JsonProperty("dateTime")
   private OffsetDateTime dateTime = null;
 
-  public HopArrival code(String code) {
+  public HopArrivalDTO code(String code) {
     this.code = code;
     return this;
   }
@@ -45,7 +45,7 @@ public class HopArrival   {
     this.code = code;
   }
 
-  public HopArrival description(String description) {
+  public HopArrivalDTO description(String description) {
     this.description = description;
     return this;
   }
@@ -65,7 +65,7 @@ public class HopArrival   {
     this.description = description;
   }
 
-  public HopArrival dateTime(OffsetDateTime dateTime) {
+  public HopArrivalDTO dateTime(OffsetDateTime dateTime) {
     this.dateTime = dateTime;
     return this;
   }
@@ -95,10 +95,10 @@ public class HopArrival   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    HopArrival hopArrival = (HopArrival) o;
-    return Objects.equals(this.code, hopArrival.code) &&
-        Objects.equals(this.description, hopArrival.description) &&
-        Objects.equals(this.dateTime, hopArrival.dateTime);
+    HopArrivalDTO hopArrivalDTO = (HopArrivalDTO) o;
+    return Objects.equals(this.code, hopArrivalDTO.code) &&
+        Objects.equals(this.description, hopArrivalDTO.description) &&
+        Objects.equals(this.dateTime, hopArrivalDTO.dateTime);
   }
 
   @Override

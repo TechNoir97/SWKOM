@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Error   {
+public class Error {
   @JsonProperty("errorMessage")
   private String errorMessage = null;
 

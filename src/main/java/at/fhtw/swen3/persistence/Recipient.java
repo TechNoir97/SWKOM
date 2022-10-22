@@ -14,18 +14,57 @@ import javax.validation.constraints.Size;
 
 @Entity(name = "recipient")
 @NoArgsConstructor
-@Getter
-@Setter
+
 
 public class Recipient {
     @Id
-    private String name = null;
+    private String name;
 
-    private String street = null;
+    private String street;
 
-    private String postalCode = null;
+    private String postalCode;
 
-    private String city = null;
+    private String city;
     @Column
-    private String country = null;
+    private String country;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
 }

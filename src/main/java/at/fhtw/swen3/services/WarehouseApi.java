@@ -5,7 +5,7 @@
  */
 package at.fhtw.swen3.services;
 
-import at.fhtw.swen3.services.dto.Hop;
+import at.fhtw.swen3.services.dto.HopDTO;
 import at.fhtw.swen3.services.dto.Warehouse;
 import at.fhtw.swen3.services.dto.Error;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +43,7 @@ public interface WarehouseApi {
 
     @Operation(summary = "Get a certain warehouse or truck by code", description = "", tags={ "warehouse-management" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Hop.class))),
+        @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(mediaType = "application/json", schema = @Schema(implementation = HopDTO.class))),
         
         @ApiResponse(responseCode = "400", description = "The operation failed due to an error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))),
         
@@ -51,7 +51,7 @@ public interface WarehouseApi {
     @RequestMapping(value = "/warehouse/{code}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Hop> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code);
+    ResponseEntity<HopDTO> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code);
 
 
     @Operation(summary = "Imports a hierarchy of Warehouse and Truck objects. ", description = "", tags={ "warehouse-management" })

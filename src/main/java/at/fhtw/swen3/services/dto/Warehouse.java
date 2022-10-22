@@ -17,13 +17,13 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Warehouse extends Hop {
+public class Warehouse extends HopDTO {
   @JsonProperty("level")
   private Integer level = null;
 
   @JsonProperty("nextHops")
   @Valid
-  private List<WarehouseNextHops> nextHops = new ArrayList<WarehouseNextHops>();
+  private List<WarehouseNextHopsDTO> nextHops = new ArrayList<WarehouseNextHopsDTO>();
 
   public Warehouse level(Integer level) {
     this.level = level;
@@ -45,12 +45,12 @@ public class Warehouse extends Hop {
     this.level = level;
   }
 
-  public Warehouse nextHops(List<WarehouseNextHops> nextHops) {
+  public Warehouse nextHops(List<WarehouseNextHopsDTO> nextHops) {
     this.nextHops = nextHops;
     return this;
   }
 
-  public Warehouse addNextHopsItem(WarehouseNextHops nextHopsItem) {
+  public Warehouse addNextHopsItem(WarehouseNextHopsDTO nextHopsItem) {
     this.nextHops.add(nextHopsItem);
     return this;
   }
@@ -62,11 +62,11 @@ public class Warehouse extends Hop {
   @Schema(required = true, description = "Next hops after this warehouse (warehouses or trucks).")
       @NotNull
     @Valid
-    public List<WarehouseNextHops> getNextHops() {
+    public List<WarehouseNextHopsDTO> getNextHops() {
     return nextHops;
   }
 
-  public void setNextHops(List<WarehouseNextHops> nextHops) {
+  public void setNextHops(List<WarehouseNextHopsDTO> nextHops) {
     this.nextHops = nextHops;
   }
 

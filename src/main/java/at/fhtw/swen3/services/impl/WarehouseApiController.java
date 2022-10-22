@@ -1,6 +1,6 @@
 package at.fhtw.swen3.services.impl;
 
-import at.fhtw.swen3.services.dto.Hop;
+import at.fhtw.swen3.services.dto.HopDTO;
 import at.fhtw.swen3.services.dto.Warehouse;
 import at.fhtw.swen3.services.WarehouseApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,18 +49,18 @@ public class WarehouseApiController implements WarehouseApi {
         return new ResponseEntity<Warehouse>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Hop> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
+    public ResponseEntity<HopDTO> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Hop>(objectMapper.readValue("{\n  \"code\" : \"code\",\n  \"locationName\" : \"locationName\",\n  \"processingDelayMins\" : 0,\n  \"hopType\" : \"hopType\",\n  \"description\" : \"description\",\n  \"locationCoordinates\" : {\n    \"lon\" : 1.4658129805029452,\n    \"lat\" : 6.027456183070403\n  }\n}", Hop.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<HopDTO>(objectMapper.readValue("{\n  \"code\" : \"code\",\n  \"locationName\" : \"locationName\",\n  \"processingDelayMins\" : 0,\n  \"hopType\" : \"hopType\",\n  \"description\" : \"description\",\n  \"locationCoordinates\" : {\n    \"lon\" : 1.4658129805029452,\n    \"lat\" : 6.027456183070403\n  }\n}", HopDTO.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Hop>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<HopDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Hop>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<HopDTO>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse body) {

@@ -15,14 +15,14 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class WarehouseNextHops   {
+public class WarehouseNextHopsDTO {
   @JsonProperty("traveltimeMins")
   private Integer traveltimeMins = null;
 
   @JsonProperty("hop")
-  private Hop hop = null;
+  private HopDTO hop = null;
 
-  public WarehouseNextHops traveltimeMins(Integer traveltimeMins) {
+  public WarehouseNextHopsDTO traveltimeMins(Integer traveltimeMins) {
     this.traveltimeMins = traveltimeMins;
     return this;
   }
@@ -42,7 +42,7 @@ public class WarehouseNextHops   {
     this.traveltimeMins = traveltimeMins;
   }
 
-  public WarehouseNextHops hop(Hop hop) {
+  public WarehouseNextHopsDTO hop(HopDTO hop) {
     this.hop = hop;
     return this;
   }
@@ -55,11 +55,11 @@ public class WarehouseNextHops   {
       @NotNull
 
     @Valid
-    public Hop getHop() {
+    public HopDTO getHop() {
     return hop;
   }
 
-  public void setHop(Hop hop) {
+  public void setHop(HopDTO hop) {
     this.hop = hop;
   }
 
@@ -72,9 +72,9 @@ public class WarehouseNextHops   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    WarehouseNextHops warehouseNextHops = (WarehouseNextHops) o;
-    return Objects.equals(this.traveltimeMins, warehouseNextHops.traveltimeMins) &&
-        Objects.equals(this.hop, warehouseNextHops.hop);
+    WarehouseNextHopsDTO warehouseNextHopsDTO = (WarehouseNextHopsDTO) o;
+    return Objects.equals(this.traveltimeMins, warehouseNextHopsDTO.traveltimeMins) &&
+        Objects.equals(this.hop, warehouseNextHopsDTO.hop);
   }
 
   @Override

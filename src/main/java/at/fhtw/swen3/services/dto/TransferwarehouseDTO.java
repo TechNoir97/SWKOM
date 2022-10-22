@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Transferwarehouse extends Hop {
+public class TransferwarehouseDTO extends HopDTO {
   @JsonProperty("regionGeoJson")
   private String regionGeoJson = null;
 
@@ -25,7 +25,7 @@ public class Transferwarehouse extends Hop {
   @JsonProperty("logisticsPartnerUrl")
   private String logisticsPartnerUrl = null;
 
-  public Transferwarehouse regionGeoJson(String regionGeoJson) {
+  public TransferwarehouseDTO regionGeoJson(String regionGeoJson) {
     this.regionGeoJson = regionGeoJson;
     return this;
   }
@@ -45,7 +45,7 @@ public class Transferwarehouse extends Hop {
     this.regionGeoJson = regionGeoJson;
   }
 
-  public Transferwarehouse logisticsPartner(String logisticsPartner) {
+  public TransferwarehouseDTO logisticsPartner(String logisticsPartner) {
     this.logisticsPartner = logisticsPartner;
     return this;
   }
@@ -65,7 +65,7 @@ public class Transferwarehouse extends Hop {
     this.logisticsPartner = logisticsPartner;
   }
 
-  public Transferwarehouse logisticsPartnerUrl(String logisticsPartnerUrl) {
+  public TransferwarehouseDTO logisticsPartnerUrl(String logisticsPartnerUrl) {
     this.logisticsPartnerUrl = logisticsPartnerUrl;
     return this;
   }
@@ -94,10 +94,10 @@ public class Transferwarehouse extends Hop {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Transferwarehouse transferwarehouse = (Transferwarehouse) o;
-    return Objects.equals(this.regionGeoJson, transferwarehouse.regionGeoJson) &&
-        Objects.equals(this.logisticsPartner, transferwarehouse.logisticsPartner) &&
-        Objects.equals(this.logisticsPartnerUrl, transferwarehouse.logisticsPartnerUrl) &&
+    TransferwarehouseDTO transferwarehouseDTO = (TransferwarehouseDTO) o;
+    return Objects.equals(this.regionGeoJson, transferwarehouseDTO.regionGeoJson) &&
+        Objects.equals(this.logisticsPartner, transferwarehouseDTO.logisticsPartner) &&
+        Objects.equals(this.logisticsPartnerUrl, transferwarehouseDTO.logisticsPartnerUrl) &&
         super.equals(o);
   }
 
