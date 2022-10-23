@@ -1,131 +1,134 @@
 package at.fhtw.swen3.persistence;
+import at.fhtw.swen3.persistence.HopArrival;
+import at.fhtw.swen3.persistence.Recipient;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
-/**
- * Parcel
- */
-@Validated
-@javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class Parcel   {
-  @JsonProperty("weight")
-  private Float weight = null;
+public class Parcel {
+    //From parcel
+    @PositiveOrZero
+    @Column
+    private Float weight;
+    @Column
+    @NotNull
+    private Recipient recipient;
+    @Column
+    @NotNull
+    private Recipient sender;
 
-  @JsonProperty("recipient")
-  private Recipient recipient = null;
+    //From NewParcelInfo
+    @Id
+    @Column
+    @Pattern(regexp="^[A-Z0-9]{9}$")
+    private String trackingId;
 
-  @JsonProperty("sender")
-  private Recipient sender = null;
+    //From TrackingInformation
+    public enum StateEnum {
+        PICKUP("Pickup"),
 
-  public Parcel weight(Float weight) {
-    this.weight = weight;
-    return this;
-  }
+        INTRANSPORT("InTransport"),
 
-  /**
-   * Get weight
-   * @return weight
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+        INTRUCKDELIVERY("InTruckDelivery"),
+
+        TRANSFERRED("Transferred"),
+
+        DELIVERED("Delivered");
+
+        private String value;
+
+        StateEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        @JsonCreator
+        public static StateEnum fromValue(String text) {
+            for (StateEnum b : StateEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+    }
+
+    private StateEnum state;
+
+    @NotNull
+    private List<HopArrival> visitedHops = new ArrayList<HopArrival>();
+    @NotNull
+    private List<HopArrival> futureHops = new ArrayList<HopArrival>();
 
     public Float getWeight() {
-    return weight;
-  }
+        return weight;
+    }
 
-  public void setWeight(Float weight) {
-    this.weight = weight;
-  }
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
 
-  public Parcel recipient(Recipient recipient) {
-    this.recipient = recipient;
-    return this;
-  }
-
-  /**
-   * Get recipient
-   * @return recipient
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    @Valid
     public Recipient getRecipient() {
-    return recipient;
-  }
+        return recipient;
+    }
 
-  public void setRecipient(Recipient recipient) {
-    this.recipient = recipient;
-  }
+    public void setRecipient(Recipient recipient) {
+        this.recipient = recipient;
+    }
 
-  public Parcel sender(Recipient sender) {
-    this.sender = sender;
-    return this;
-  }
-
-  /**
-   * Get sender
-   * @return sender
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    @Valid
     public Recipient getSender() {
-    return sender;
-  }
-
-  public void setSender(Recipient sender) {
-    this.sender = sender;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
+        return sender;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public void setSender(Recipient sender) {
+        this.sender = sender;
     }
-    Parcel parcel = (Parcel) o;
-    return Objects.equals(this.weight, parcel.weight) &&
-        Objects.equals(this.recipient, parcel.recipient) &&
-        Objects.equals(this.sender, parcel.sender);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(weight, recipient, sender);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Parcel {\n");
-    
-    sb.append("    weight: ").append(toIndentedString(weight)).append("\n");
-    sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
-    sb.append("    sender: ").append(toIndentedString(sender)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
+    public StateEnum getState() {
+        return state;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    public void setState(StateEnum state) {
+        this.state = state;
+    }
+
+    public String getTrackingId() {
+        return trackingId;
+    }
+
+    public void setTrackingId(String trackingId) {
+        this.trackingId = trackingId;
+    }
+
+    public List<HopArrival> getFutureHops() {
+        return futureHops;
+    }
+
+    public void setFutureHops(List<HopArrival> futureHops) {
+        this.futureHops = futureHops;
+    }
+
+    public List<HopArrival> getVisitedHops() {
+        return visitedHops;
+    }
+
+    public void setVisitedHops(List<HopArrival> visitedHops) {
+        this.visitedHops = visitedHops;
+    }
 }
