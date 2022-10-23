@@ -1,105 +1,28 @@
 package at.fhtw.swen3.persistence;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import at.fhtw.swen3.services.dto.HopDTO;
 
-/**
- * WarehouseNextHops
- */
-@Validated
-@javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
+public class WarehouseNextHops {
+    private Integer traveltimeMins;
+    @NotNull
+    private HopDTO hop;
 
-public class WarehouseNextHops   {
-  @JsonProperty("traveltimeMins")
-  private Integer traveltimeMins = null;
+    public HopDTO getHop() {
+        return hop;
+    }
 
-  @JsonProperty("hop")
-  private Hop hop = null;
-
-  public WarehouseNextHops traveltimeMins(Integer traveltimeMins) {
-    this.traveltimeMins = traveltimeMins;
-    return this;
-  }
-
-  /**
-   * Get traveltimeMins
-   * @return traveltimeMins
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
+    public void setHop(HopDTO hop) {
+        this.hop = hop;
+    }
 
     public Integer getTraveltimeMins() {
-    return traveltimeMins;
-  }
-
-  public void setTraveltimeMins(Integer traveltimeMins) {
-    this.traveltimeMins = traveltimeMins;
-  }
-
-  public WarehouseNextHops hop(Hop hop) {
-    this.hop = hop;
-    return this;
-  }
-
-  /**
-   * Get hop
-   * @return hop
-   **/
-  @Schema(required = true, description = "")
-      @NotNull
-
-    @Valid
-    public Hop getHop() {
-    return hop;
-  }
-
-  public void setHop(Hop hop) {
-    this.hop = hop;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
+        return traveltimeMins;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public void setTraveltimeMins(Integer traveltimeMins) {
+        this.traveltimeMins = traveltimeMins;
     }
-    WarehouseNextHops warehouseNextHops = (WarehouseNextHops) o;
-    return Objects.equals(this.traveltimeMins, warehouseNextHops.traveltimeMins) &&
-        Objects.equals(this.hop, warehouseNextHops.hop);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(traveltimeMins, hop);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class WarehouseNextHops {\n");
-    
-    sb.append("    traveltimeMins: ").append(toIndentedString(traveltimeMins)).append("\n");
-    sb.append("    hop: ").append(toIndentedString(hop)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }
