@@ -1,7 +1,7 @@
 package at.fhtw.swen3.services.impl;
 
 import at.fhtw.swen3.services.dto.HopDTO;
-import at.fhtw.swen3.services.dto.Warehouse;
+import at.fhtw.swen3.services.dto.WarehouseDTO;
 import at.fhtw.swen3.services.WarehouseApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,18 +35,18 @@ public class WarehouseApiController implements WarehouseApi {
         this.request = request;
     }
 
-    public ResponseEntity<Warehouse> exportWarehouses() {
+    public ResponseEntity<WarehouseDTO> exportWarehouses() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Warehouse>(objectMapper.readValue("\"\"", Warehouse.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<WarehouseDTO>(objectMapper.readValue("\"\"", WarehouseDTO.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Warehouse>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<WarehouseDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<Warehouse>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<WarehouseDTO>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<HopDTO> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
@@ -63,7 +63,7 @@ public class WarehouseApiController implements WarehouseApi {
         return new ResponseEntity<HopDTO>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse body) {
+    public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody WarehouseDTO body) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

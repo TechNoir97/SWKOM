@@ -13,19 +13,21 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity(name = "recipient")
-@NoArgsConstructor
-
-
 public class Recipient {
     @Id
+    @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String name;
 
+    @Pattern(regexp = "[A-Z][a-z-äöüÄÖÜßéÉèÈêÊ...]+ ([a-z]?\\d?\\/?)+")
     private String street;
 
+    @Pattern(regexp = "A-\\d{4}")
     private String postalCode;
 
+    @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String city;
     @Column
+    @Pattern(regexp = ".*((\\bAustria\\b)|(\\bÖsterreich\\b))$")
     private String country;
 
     public String getCity() {

@@ -14,11 +14,11 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Error {
+public class ErrorDTO {
   @JsonProperty("errorMessage")
   private String errorMessage = null;
 
-  public Error errorMessage(String errorMessage) {
+  public ErrorDTO errorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
     return this;
   }
@@ -47,7 +47,7 @@ public class Error {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Error error = (Error) o;
+    ErrorDTO error = (ErrorDTO) o;
     return Objects.equals(this.errorMessage, error.errorMessage);
   }
 

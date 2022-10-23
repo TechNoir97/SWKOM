@@ -1,16 +1,37 @@
 package at.fhtw.swen3.persistence;
-
+import at.fhtw.swen3.persistence.HopArrival;
+import at.fhtw.swen3.persistence.Recipient;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Parcel {
     //From parcel
+    @PositiveOrZero
+    @Column
     private Float weight;
+    @Column
+    @NotNull
     private Recipient recipient;
+    @Column
+    @NotNull
     private Recipient sender;
 
     //From NewParcelInfo
+    @Id
+    @Column
+    @Pattern(regexp="^[A-Z0-9]{9}$")
     private String trackingId;
 
     //From TrackingInformation
@@ -50,9 +71,10 @@ public class Parcel {
 
     private StateEnum state;
 
-    //TODO muss noch auskommentiert werden und in den Mapper reingegebene werden
-    //private List<HopArrival> visitedHops = new ArrayList<HopArrival>();
-    //private List<HopArrival> futureHops = new ArrayList<HopArrival>();
+    @NotNull
+    private List<HopArrival> visitedHops = new ArrayList<HopArrival>();
+    @NotNull
+    private List<HopArrival> futureHops = new ArrayList<HopArrival>();
 
     public Float getWeight() {
         return weight;
@@ -92,5 +114,21 @@ public class Parcel {
 
     public void setTrackingId(String trackingId) {
         this.trackingId = trackingId;
+    }
+
+    public List<HopArrival> getFutureHops() {
+        return futureHops;
+    }
+
+    public void setFutureHops(List<HopArrival> futureHops) {
+        this.futureHops = futureHops;
+    }
+
+    public List<HopArrival> getVisitedHops() {
+        return visitedHops;
+    }
+
+    public void setVisitedHops(List<HopArrival> visitedHops) {
+        this.visitedHops = visitedHops;
     }
 }

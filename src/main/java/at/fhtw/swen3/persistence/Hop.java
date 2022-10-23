@@ -10,5 +10,5 @@ public class Hop {
     private String description;
     private Integer processingDelayMins;
     private String locationName;
-    private GeoCoordinateDTO locationCoordinates;
+    private GeoCoordinate locationCoordinates;
 }

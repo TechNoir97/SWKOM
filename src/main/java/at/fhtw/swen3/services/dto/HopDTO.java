@@ -18,7 +18,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "hopType", visible = true )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Warehouse.class, name = "warehouse"),
+        @JsonSubTypes.Type(value = WarehouseDTO.class, name = "warehouse"),
         @JsonSubTypes.Type(value = TruckDTO.class, name = "truck"),
         @JsonSubTypes.Type(value = TransferwarehouseDTO.class, name = "transferwarehouse"),
 })

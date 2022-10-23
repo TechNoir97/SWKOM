@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class Warehouse extends HopDTO {
+public class WarehouseDTO extends HopDTO {
   @JsonProperty("level")
   private Integer level = null;
 
@@ -25,7 +25,7 @@ public class Warehouse extends HopDTO {
   @Valid
   private List<WarehouseNextHopsDTO> nextHops = new ArrayList<WarehouseNextHopsDTO>();
 
-  public Warehouse level(Integer level) {
+  public WarehouseDTO level(Integer level) {
     this.level = level;
     return this;
   }
@@ -45,12 +45,12 @@ public class Warehouse extends HopDTO {
     this.level = level;
   }
 
-  public Warehouse nextHops(List<WarehouseNextHopsDTO> nextHops) {
+  public WarehouseDTO nextHops(List<WarehouseNextHopsDTO> nextHops) {
     this.nextHops = nextHops;
     return this;
   }
 
-  public Warehouse addNextHopsItem(WarehouseNextHopsDTO nextHopsItem) {
+  public WarehouseDTO addNextHopsItem(WarehouseNextHopsDTO nextHopsItem) {
     this.nextHops.add(nextHopsItem);
     return this;
   }
@@ -79,7 +79,7 @@ public class Warehouse extends HopDTO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Warehouse warehouse = (Warehouse) o;
+    WarehouseDTO warehouse = (WarehouseDTO) o;
     return Objects.equals(this.level, warehouse.level) &&
         Objects.equals(this.nextHops, warehouse.nextHops) &&
         super.equals(o);
