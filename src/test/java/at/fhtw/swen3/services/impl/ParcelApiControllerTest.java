@@ -45,9 +45,9 @@ class ParcelApiControllerTest {
 
     }
 
-    /*@Test
+    @Test
     void submitParcel() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+       /* MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
         when(parcel.addParcel(any(Parcel.class))).thenReturn(true);
@@ -56,12 +56,12 @@ class ParcelApiControllerTest {
         ResponseEntity<Object> responseEntity = parcelApiController.addParcel(parcel);
 
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
-        assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
-    }*/
+        assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");*/
+    }
 
-/*
+
     @Test
-    void trackParcel() {
+    void trackParcel() {/*
         // given
         Parcel parcel1 = new Parcel(4, "Tjong", "Alesch");
         Parcel parcel2 = new Parcel(2, "Alex", "Gussin");
@@ -80,9 +80,9 @@ class ParcelApiControllerTest {
                 .isEqualTo(parcel1.getSender());
 
         assertThat(result.getParcelList().get(1).getRecipient())
-                .isEqualTo(parcel2.getRecipient());
+                .isEqualTo(parcel2.getRecipient());*/
     }
-*/
+
     @Test
     void transitionParcel() {
     }
