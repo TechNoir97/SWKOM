@@ -1,10 +1,10 @@
 package at.fhtw.swen3.services.impl;
 
 import org.junit.jupiter.api.Test;
-import at.fhtw.swen3.persistence.NewParcelInfo;
+import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.persistence.Parcel;
 import java.util.Arrays;
-import at.fhtw.swen3.persistence.TrackingInformation;
+import at.fhtw.swen3.services.dto.TrackingInformation;
 import at.fhtw.swen3.services.ParcelApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
