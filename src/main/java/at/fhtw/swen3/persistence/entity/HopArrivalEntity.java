@@ -1,14 +1,20 @@
-package at.fhtw.swen3.persistence;
+package at.fhtw.swen3.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.threeten.bp.OffsetDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class HopArrival {
+@Entity(name = "HopArrival")
+public class HopArrivalEntity {
+    @Id
     @Pattern(regexp="^[A-Z]{4}\\d{1,4}$")
     private String code;
     private String description;
+    @NotNull
     private OffsetDateTime dateTime;
 
     public OffsetDateTime getDateTime() {

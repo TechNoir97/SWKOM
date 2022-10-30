@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 
 
-public class RecipientDTO {
+public class Recipient {
   @JsonProperty("name")
   private String name = null;
 
@@ -30,7 +30,7 @@ public class RecipientDTO {
   @JsonProperty("country")
   private String country = null;
 
-  public RecipientDTO name(String name) {
+  public Recipient name(String name) {
     this.name = name;
     return this;
   }
@@ -50,7 +50,7 @@ public class RecipientDTO {
     this.name = name;
   }
 
-  public RecipientDTO street(String street) {
+  public Recipient street(String street) {
     this.street = street;
     return this;
   }
@@ -70,7 +70,7 @@ public class RecipientDTO {
     this.street = street;
   }
 
-  public RecipientDTO postalCode(String postalCode) {
+  public Recipient postalCode(String postalCode) {
     this.postalCode = postalCode;
     return this;
   }
@@ -90,7 +90,7 @@ public class RecipientDTO {
     this.postalCode = postalCode;
   }
 
-  public RecipientDTO city(String city) {
+  public Recipient city(String city) {
     this.city = city;
     return this;
   }
@@ -110,7 +110,7 @@ public class RecipientDTO {
     this.city = city;
   }
 
-  public RecipientDTO country(String country) {
+  public Recipient country(String country) {
     this.country = country;
     return this;
   }
@@ -139,7 +139,7 @@ public class RecipientDTO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RecipientDTO recipient = (RecipientDTO) o;
+    Recipient recipient = (Recipient) o;
     return Objects.equals(this.name, recipient.name) &&
         Objects.equals(this.street, recipient.street) &&
         Objects.equals(this.postalCode, recipient.postalCode) &&

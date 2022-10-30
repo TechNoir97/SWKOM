@@ -1,7 +1,7 @@
 package at.fhtw.swen3.services.impl;
 
-import at.fhtw.swen3.services.dto.HopDTO;
-import at.fhtw.swen3.services.dto.WarehouseDTO;
+import at.fhtw.swen3.services.dto.Hop;
+import at.fhtw.swen3.services.dto.Warehouse;
 import at.fhtw.swen3.services.WarehouseApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,37 +35,40 @@ public class WarehouseApiController implements WarehouseApi {
         this.request = request;
     }
 
-    public ResponseEntity<WarehouseDTO> exportWarehouses() {
+    public ResponseEntity<Warehouse> exportWarehouses() {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<WarehouseDTO>(objectMapper.readValue("\"\"", WarehouseDTO.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Warehouse>(objectMapper.readValue("\"\"", Warehouse.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<WarehouseDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Warehouse>(HttpStatus.OK);
+                //TODO muss aber noch implementiert werden
             }
         }
 
-        return new ResponseEntity<WarehouseDTO>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Warehouse>(HttpStatus.OK);//TODO muss aber noch implementiert werden
     }
 
-    public ResponseEntity<HopDTO> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
+    public ResponseEntity<Hop> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<HopDTO>(objectMapper.readValue("{\n  \"code\" : \"code\",\n  \"locationName\" : \"locationName\",\n  \"processingDelayMins\" : 0,\n  \"hopType\" : \"hopType\",\n  \"description\" : \"description\",\n  \"locationCoordinates\" : {\n    \"lon\" : 1.4658129805029452,\n    \"lat\" : 6.027456183070403\n  }\n}", HopDTO.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Hop>(objectMapper.readValue("{\n  \"code\" : \"code\",\n  \"locationName\" : \"locationName\",\n  \"processingDelayMins\" : 0,\n  \"hopType\" : \"hopType\",\n  \"description\" : \"description\",\n  \"locationCoordinates\" : {\n    \"lon\" : 1.4658129805029452,\n    \"lat\" : 6.027456183070403\n  }\n}", Hop.class), HttpStatus.OK);
+                //TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<HopDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<Hop>(HttpStatus.OK);
+                //TODO muss aber noch implementiert werden
             }
         }
 
-        return new ResponseEntity<HopDTO>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Hop>(HttpStatus.OK);  //TODO muss aber noch implementiert werden
     }
 
-    public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody WarehouseDTO body) {
+    public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
     }
 
 }

@@ -1,16 +1,9 @@
 package at.fhtw.swen3.services.mapper;
 
-import at.fhtw.swen3.persistence.HopArrival;
 import at.fhtw.swen3.services.dto.*;
-import at.fhtw.swen3.persistence.Recipient;
-import at.fhtw.swen3.persistence.Parcel;
+import at.fhtw.swen3.persistence.entity.ParcelEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.threeten.bp.OffsetDateTime;
-
-import javax.persistence.Column;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mapper
 public interface ParcelMapper {
@@ -55,8 +48,7 @@ public interface ParcelMapper {
     @Mapping(source = "sender.postalCode", target = "sender.postalCode")
     @Mapping(source = "sender.city", target = "sender.city")
     @Mapping(source = "sender.country", target = "sender.country")
-
-    Parcel getModelFromEntity(ParcelDTO parcelDTO);
+    ParcelEntity getModelFromEntity(Parcel parcel);
 
     @Mapping(source = "recipient.name", target = "recipient.name")
     @Mapping(source = "recipient.street", target = "recipient.street")
@@ -69,13 +61,12 @@ public interface ParcelMapper {
     @Mapping(source = "sender.postalCode", target = "sender.postalCode")
     @Mapping(source = "sender.city", target = "sender.city")
     @Mapping(source = "sender.country", target = "sender.country")
-
-    ParcelDTO getModelFromDTO(Parcel parcel);
+    Parcel getModelFromDTO(ParcelEntity parcelEntity);
 
     @Mapping(source = "parcelDTO.weight", target = "weight")
     @Mapping(source = "newParcelInfo.trackingId", target = "trackingId")
     @Mapping(source = "trackingInformation.state", target = "state")
-    Parcel from(ParcelDTO parcelDTO, TrackingInformation trackingInformation, NewParcelInfo newParcelInfo);
+    ParcelEntity from(Parcel parcel, TrackingInformation trackingInformation, NewParcelInfo newParcelInfo);
 
 
 

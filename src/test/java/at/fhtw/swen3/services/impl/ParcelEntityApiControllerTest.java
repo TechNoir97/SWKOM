@@ -1,44 +1,21 @@
 package at.fhtw.swen3.services.impl;
 
 import org.junit.jupiter.api.Test;
-import at.fhtw.swen3.services.dto.NewParcelInfo;
-import at.fhtw.swen3.persistence.Parcel;
-import java.util.Arrays;
-import at.fhtw.swen3.services.dto.TrackingInformation;
-import at.fhtw.swen3.services.ParcelApi;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
-import at.fhtw.swen3.persistence.Parcel;
+import at.fhtw.swen3.persistence.entity.ParcelEntity;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.http.ResponseEntity;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 
-class ParcelApiControllerTest {
+class ParcelEntityApiControllerTest {
 
     @InjectMocks
     ParcelApiController parcelApiController;
 
     @Mock
-    Parcel parcel;
+    ParcelEntity parcelEntity;
 
     @Test
     void reportParcelHop() {

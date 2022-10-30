@@ -1,8 +1,15 @@
-package at.fhtw.swen3.persistence;
+package at.fhtw.swen3.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-public class Transferwarehouse {
+@Entity(name = "Transferwarehouse")
+public class TransferwarehouseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String regionGeoJson;
     private String logisticsPartner;
     private String logisticsPartnerUrl;

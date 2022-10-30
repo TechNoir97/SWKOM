@@ -1,35 +1,37 @@
-package at.fhtw.swen3.persistence;
-import at.fhtw.swen3.persistence.HopArrival;
-import at.fhtw.swen3.persistence.Recipient;
+package at.fhtw.swen3.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Getter;
-import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Parcel {
+@Entity(name = "Parcel")
+public class ParcelEntity {
     //From parcel
+    @Id
+    private int id;
     @PositiveOrZero
     @Column
+    @DecimalMin("BigDecimal")
     private Float weight;
     @Column
     @NotNull
-    private Recipient recipient;
+    @ManyToOne
+    private RecipientEntity recipientEntity;
     @Column
     @NotNull
-    private Recipient sender;
+    @ManyToOne
+    private RecipientEntity sender;
 
     //From NewParcelInfo
-    @Id
+
     @Column
     @Pattern(regexp="^[A-Z0-9]{9}$")
     private String trackingId;
@@ -71,10 +73,12 @@ public class Parcel {
 
     private StateEnum state;
 
+    @OneToMany
     @NotNull
-    private List<HopArrival> visitedHops = new ArrayList<HopArrival>();
+    private List<HopArrivalEntity> visitedHops = new ArrayList<HopArrivalEntity>();
+    @OneToMany
     @NotNull
-    private List<HopArrival> futureHops = new ArrayList<HopArrival>();
+    private List<HopArrivalEntity> futureHops = new ArrayList<HopArrivalEntity>();
 
     public Float getWeight() {
         return weight;
@@ -84,19 +88,19 @@ public class Parcel {
         this.weight = weight;
     }
 
-    public Recipient getRecipient() {
-        return recipient;
+    public RecipientEntity getRecipient() {
+        return recipientEntity;
     }
 
-    public void setRecipient(Recipient recipient) {
-        this.recipient = recipient;
+    public void setRecipient(RecipientEntity recipientEntity) {
+        this.recipientEntity = recipientEntity;
     }
 
-    public Recipient getSender() {
+    public RecipientEntity getSender() {
         return sender;
     }
 
-    public void setSender(Recipient sender) {
+    public void setSender(RecipientEntity sender) {
         this.sender = sender;
     }
 
@@ -116,19 +120,19 @@ public class Parcel {
         this.trackingId = trackingId;
     }
 
-    public List<HopArrival> getFutureHops() {
+    public List<HopArrivalEntity> getFutureHops() {
         return futureHops;
     }
 
-    public void setFutureHops(List<HopArrival> futureHops) {
+    public void setFutureHops(List<HopArrivalEntity> futureHops) {
         this.futureHops = futureHops;
     }
 
-    public List<HopArrival> getVisitedHops() {
+    public List<HopArrivalEntity> getVisitedHops() {
         return visitedHops;
     }
 
-    public void setVisitedHops(List<HopArrival> visitedHops) {
+    public void setVisitedHops(List<HopArrivalEntity> visitedHops) {
         this.visitedHops = visitedHops;
     }
 }

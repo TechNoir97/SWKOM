@@ -1,9 +1,12 @@
-package at.fhtw.swen3.persistence;
+package at.fhtw.swen3.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class Truck {
+@Entity(name = "Truck")
+public class TruckEntity {
     private String regionGeoJson;
+    @Id
     private String numberPlate;
 
     public String getRegionGeoJson() {

@@ -61,11 +61,11 @@ public class TrackingInformation   {
 
   @JsonProperty("visitedHops")
   @Valid
-  private List<HopArrivalDTO> visitedHops = new ArrayList<HopArrivalDTO>();
+  private List<HopArrival> visitedHops = new ArrayList<HopArrival>();
 
   @JsonProperty("futureHops")
   @Valid
-  private List<HopArrivalDTO> futureHops = new ArrayList<HopArrivalDTO>();
+  private List<HopArrival> futureHops = new ArrayList<HopArrival>();
 
   public TrackingInformation state(StateEnum state) {
     this.state = state;
@@ -87,12 +87,12 @@ public class TrackingInformation   {
     this.state = state;
   }
 
-  public TrackingInformation visitedHops(List<HopArrivalDTO> visitedHops) {
+  public TrackingInformation visitedHops(List<HopArrival> visitedHops) {
     this.visitedHops = visitedHops;
     return this;
   }
 
-  public TrackingInformation addVisitedHopsItem(HopArrivalDTO visitedHopsItem) {
+  public TrackingInformation addVisitedHopsItem(HopArrival visitedHopsItem) {
     this.visitedHops.add(visitedHopsItem);
     return this;
   }
@@ -104,20 +104,20 @@ public class TrackingInformation   {
   @Schema(required = true, description = "Hops visited in the past.")
       @NotNull
     @Valid
-    public List<HopArrivalDTO> getVisitedHops() {
+    public List<HopArrival> getVisitedHops() {
     return visitedHops;
   }
 
-  public void setVisitedHops(List<HopArrivalDTO> visitedHops) {
+  public void setVisitedHops(List<HopArrival> visitedHops) {
     this.visitedHops = visitedHops;
   }
 
-  public TrackingInformation futureHops(List<HopArrivalDTO> futureHops) {
+  public TrackingInformation futureHops(List<HopArrival> futureHops) {
     this.futureHops = futureHops;
     return this;
   }
 
-  public TrackingInformation addFutureHopsItem(HopArrivalDTO futureHopsItem) {
+  public TrackingInformation addFutureHopsItem(HopArrival futureHopsItem) {
     this.futureHops.add(futureHopsItem);
     return this;
   }
@@ -129,11 +129,11 @@ public class TrackingInformation   {
   @Schema(required = true, description = "Hops coming up in the future - their times are estimations.")
       @NotNull
     @Valid
-    public List<HopArrivalDTO> getFutureHops() {
+    public List<HopArrival> getFutureHops() {
     return futureHops;
   }
 
-  public void setFutureHops(List<HopArrivalDTO> futureHops) {
+  public void setFutureHops(List<HopArrival> futureHops) {
     this.futureHops = futureHops;
   }
 
