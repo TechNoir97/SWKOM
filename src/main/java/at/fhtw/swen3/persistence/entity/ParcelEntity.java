@@ -7,8 +7,6 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class ParcelEntity {
     @Column
     @NotNull
     @ManyToOne
-    private RecipientEntity recipientEntity;
+    private RecipientEntity recipient;
     @Column
     @NotNull
     @ManyToOne
@@ -89,11 +87,11 @@ public class ParcelEntity {
     }
 
     public RecipientEntity getRecipient() {
-        return recipientEntity;
+        return recipient;
     }
 
     public void setRecipient(RecipientEntity recipientEntity) {
-        this.recipientEntity = recipientEntity;
+        this.recipient = recipientEntity;
     }
 
     public RecipientEntity getSender() {
