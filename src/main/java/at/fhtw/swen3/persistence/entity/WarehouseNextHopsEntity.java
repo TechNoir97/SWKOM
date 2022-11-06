@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "WarehouseNextHop")
+@Table
 public class WarehouseNextHopsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

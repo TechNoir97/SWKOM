@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Parcel")
+@Table
 public class ParcelEntity {
     //From parcel
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JoinColumn
     private int id;
     @PositiveOrZero
     @Column
@@ -22,10 +25,12 @@ public class ParcelEntity {
     @Column
     @NotNull
     @ManyToOne
+    @JoinColumn
     private RecipientEntity recipient;
     @Column
     @NotNull
     @ManyToOne
+    @JoinColumn
     private RecipientEntity sender;
 
     //From NewParcelInfo
