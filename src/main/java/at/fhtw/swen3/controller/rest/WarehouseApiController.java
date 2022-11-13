@@ -1,8 +1,7 @@
-package at.fhtw.swen3.services.impl;
+package at.fhtw.swen3.controller.rest;
 
 import at.fhtw.swen3.services.dto.Hop;
 import at.fhtw.swen3.services.dto.Warehouse;
-import at.fhtw.swen3.services.WarehouseApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

@@ -1,15 +1,16 @@
-package at.fhtw.swen3.services.impl;
+package at.fhtw.swen3.controller.rest;
 
+import at.fhtw.swen3.services.ParcelService;
 import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
 import at.fhtw.swen3.services.dto.TrackingInformation;
-import at.fhtw.swen3.services.ParcelApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +32,13 @@ public class ParcelApiController implements ParcelApi {
 
     private final HttpServletRequest request;
 
+    private final ParcelService parcelService;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public ParcelApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public ParcelApiController(ObjectMapper objectMapper, HttpServletRequest request, ParcelService parcelService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.parcelService = parcelService;
     }
 
     public ResponseEntity<Void> reportParcelDelivery(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId) {

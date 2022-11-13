@@ -1,5 +1,6 @@
 package at.fhtw.swen3.services.impl;
 
+import at.fhtw.swen3.controller.rest.WarehouseApiController;
 import at.fhtw.swen3.persistence.entity.WarehouseEntity;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
