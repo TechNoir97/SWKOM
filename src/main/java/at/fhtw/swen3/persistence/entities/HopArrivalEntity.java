@@ -1,9 +1,8 @@
-package at.fhtw.swen3.persistence.entity;
+package at.fhtw.swen3.persistence.entities;
 
 import org.threeten.bp.OffsetDateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -21,6 +20,7 @@ public class HopArrivalEntity {
 
     @ManyToOne
     @JoinColumn
+    @NotNull
     private ParcelEntity parcel;
 
     public OffsetDateTime getDateTime() {

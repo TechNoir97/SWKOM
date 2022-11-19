@@ -1,4 +1,4 @@
-package at.fhtw.swen3.persistence.entity;
+package at.fhtw.swen3.persistence.entities;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -74,6 +74,7 @@ public class ParcelEntity {
         }
     }
 
+    @NotNull
     private StateEnum state;
 
     @OneToMany

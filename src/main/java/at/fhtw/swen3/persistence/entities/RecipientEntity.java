@@ -1,4 +1,4 @@
-package at.fhtw.swen3.persistence.entity;
+package at.fhtw.swen3.persistence.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -12,7 +12,7 @@ public class RecipientEntity {
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String name;
 
-    @Pattern(regexp = "[A-Z][a-z-äöüÄÖÜßéÉèÈêÊ...]+ ([a-z]?\\d?\\/?)+")
+    @Pattern(regexp = "[A-Z][a-z-äöüÄÖÜßéÉèÈêÊ.]+ ([a-z]?\\d?\\/?)+")
     private String street;
 
     @Pattern(regexp = "A-\\d{4}")
