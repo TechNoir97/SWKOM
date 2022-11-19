@@ -74,6 +74,7 @@ public class ParcelEntity {
         }
     }
 
+    @NotNull
     private StateEnum state;
 
     @OneToMany
