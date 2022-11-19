@@ -1,7 +1,8 @@
 package at.fhtw.swen3.services.impl;
 
+import at.fhtw.swen3.controller.rest.ParcelApiController;
 import org.junit.jupiter.api.Test;
-import at.fhtw.swen3.persistence.entity.ParcelEntity;
+import at.fhtw.swen3.persistence.entities.ParcelEntity;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

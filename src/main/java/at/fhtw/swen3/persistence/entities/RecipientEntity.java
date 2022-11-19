@@ -1,11 +1,14 @@
-package at.fhtw.swen3.persistence.entity;
+package at.fhtw.swen3.persistence.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 @Entity(name = "recipient")
+@Table
 public class RecipientEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String name;
 

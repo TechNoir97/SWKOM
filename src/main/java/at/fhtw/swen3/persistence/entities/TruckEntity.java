@@ -1,12 +1,14 @@
-package at.fhtw.swen3.persistence.entity;
+package at.fhtw.swen3.persistence.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "Truck")
+@Table
 public class TruckEntity {
-    private String regionGeoJson;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String regionGeoJson;
     private String numberPlate;
 
     public String getRegionGeoJson() {

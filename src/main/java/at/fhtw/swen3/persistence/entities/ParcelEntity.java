@@ -1,4 +1,4 @@
-package at.fhtw.swen3.persistence.entity;
+package at.fhtw.swen3.persistence.entities;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -7,15 +7,16 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Parcel")
+@Table
 public class ParcelEntity {
     //From parcel
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @JoinColumn
     private int id;
     @PositiveOrZero
     @Column
@@ -24,10 +25,12 @@ public class ParcelEntity {
     @Column
     @NotNull
     @ManyToOne
-    private RecipientEntity recipientEntity;
+    @JoinColumn
+    private RecipientEntity recipient;
     @Column
     @NotNull
     @ManyToOne
+    @JoinColumn
     private RecipientEntity sender;
 
     //From NewParcelInfo
@@ -89,11 +92,11 @@ public class ParcelEntity {
     }
 
     public RecipientEntity getRecipient() {
-        return recipientEntity;
+        return recipient;
     }
 
     public void setRecipient(RecipientEntity recipientEntity) {
-        this.recipientEntity = recipientEntity;
+        this.recipient = recipientEntity;
     }
 
     public RecipientEntity getSender() {

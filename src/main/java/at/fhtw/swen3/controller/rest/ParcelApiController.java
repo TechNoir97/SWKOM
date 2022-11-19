@@ -1,9 +1,11 @@
-package at.fhtw.swen3.services.impl;
+package at.fhtw.swen3.controller.rest;
 
+import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.services.ParcelService;
 import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
 import at.fhtw.swen3.services.dto.TrackingInformation;
-import at.fhtw.swen3.services.ParcelApi;
+import at.fhtw.swen3.services.mapper.ParcelMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,10 +33,13 @@ public class ParcelApiController implements ParcelApi {
 
     private final HttpServletRequest request;
 
+    private final ParcelService parcelService;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public ParcelApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public ParcelApiController(ObjectMapper objectMapper, HttpServletRequest request, ParcelService parcelService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.parcelService = parcelService;
     }
 
     public ResponseEntity<Void> reportParcelDelivery(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId) {
@@ -47,14 +52,16 @@ public class ParcelApiController implements ParcelApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<NewParcelInfo> submitParcel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel body) {
+    public ResponseEntity<NewParcelInfo> submitParcel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel parcel) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
+                ParcelEntity parcelEntity = ParcelMapper.INSTANCE.dtoToEntity(parcel);
+                parcelService.submitNewParcel(parcelEntity);
                 return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.CREATED);//TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<NewParcelInfo>(HttpStatus.CREATED);
+                return new ResponseEntity<NewParcelInfo>(HttpStatus.INTERNAL_SERVER_ERROR);
                 //TODO muss aber noch implementiert werden
             }
         }
