@@ -65,7 +65,7 @@ public class WarehouseApiController implements WarehouseApi {
         return new ResponseEntity<Hop>(HttpStatus.OK);  //TODO muss aber noch implementiert werden
     }
 
-    public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse body) {
+    public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse warehouse) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
     }
