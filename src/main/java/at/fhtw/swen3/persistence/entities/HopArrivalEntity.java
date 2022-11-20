@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity(name = "HopArrival")
-@Table
+@Table(name = "hoparrival")
 @NoArgsConstructor
 public class HopArrivalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Pattern(regexp="^[A-Z]{4}\\d{1,4}$")
     private String code;
@@ -51,5 +51,7 @@ public class HopArrivalEntity {
     }
     public int getId() {
         return id;
+    }
+    public void setId(Integer id){this.id = id;
     }
 }

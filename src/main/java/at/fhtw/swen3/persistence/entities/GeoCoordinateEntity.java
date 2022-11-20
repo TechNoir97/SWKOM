@@ -1,14 +1,15 @@
 package at.fhtw.swen3.persistence.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.lang.Nullable;
 
+import javax.persistence.*;
+
+@Table(name = "geocoordinate")
 @Entity(name = "GeoCoordinate")
 public class GeoCoordinateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private int id;
     private Double lat;
     private Double lon;

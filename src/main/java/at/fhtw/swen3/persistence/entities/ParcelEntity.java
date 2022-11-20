@@ -11,15 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Parcel")
-@Table
+@Table(name = "parcel")
 public class ParcelEntity {
     //From parcel
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JoinColumn
+    @Column(name = "id", nullable = false)
     private int id;
     @PositiveOrZero
-    @Column
     @DecimalMin("BigDecimal")
     private Float weight;
 
@@ -35,9 +34,17 @@ public class ParcelEntity {
 
     //From NewParcelInfo
 
-    @Column
+
     @Pattern(regexp="^[A-Z0-9]{9}$")
     private String trackingId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     //From TrackingInformation
     public enum StateEnum {
