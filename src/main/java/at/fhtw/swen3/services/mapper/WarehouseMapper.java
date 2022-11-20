@@ -1,24 +1,25 @@
 package at.fhtw.swen3.services.mapper;
 
-import at.fhtw.swen3.persistence.entity.WarehouseNextHopsEntity;
+import at.fhtw.swen3.persistence.entities.WarehouseEntity;
+import at.fhtw.swen3.persistence.entities.WarehouseNextHopsEntity;
+import at.fhtw.swen3.services.dto.Warehouse;
 import at.fhtw.swen3.services.dto.WarehouseNextHops;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 public interface WarehouseMapper {
-
+    WarehouseMapper INSTANCE = Mappers.getMapper(WarehouseMapper.class);
     @Mapping(source = "nextHops.traveltimeMins", target = "nextHops.traveltimeMins")
     @Mapping(source = "nextHops.hop", target = "nextHops.hop")
     @Mapping(source = "WarehouseNextHopsDTO.level", target = "level")
-    WarehouseNextHopsEntity getModelFromEntity(WarehouseNextHops warehouseNextHops);
+    WarehouseEntity dtoToEntity(Warehouse warehouse);
 
     @Mapping(source = "nextHops.traveltimeMins", target = "nextHops.traveltimeMins")
     @Mapping(source = "nextHops.hop", target = "nextHops.hop")
     @Mapping(source = "WarehouseNextHops.level", target = "level")
-    WarehouseNextHops getModelFromEntity(WarehouseNextHopsEntity warehouseNextHopsEntity);
+    Warehouse entityToDto(WarehouseEntity warehouseEntity);
 
 
-    //WarehouseMapper INSTANCE = Mappers.getMapper(WarehouseMapper.class);
-    //WarehouseNextHopsDTO entityToDto(WarehouseNextHops warehouseNextHops);
-    //WarehouseNextHops dtoToEntity(WarehouseNextHopsDTO warehouseNextHopsDTO);
+
 
 }
