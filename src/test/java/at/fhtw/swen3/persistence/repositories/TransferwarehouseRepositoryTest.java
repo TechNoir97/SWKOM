@@ -8,4 +8,8 @@ import org.junit.jupiter.api.Test;
 
 @SpringBootTest
 class TransferwarehouseRepositoryTest {
+    @Test
+    public void saveTransferwarehouseEntityTrue(){
+
+    }
 }
