@@ -4,10 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "WarehouseNextHop")
-@Table
+@Table(name = "warehousenexthop")
 public class WarehouseNextHopsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private int id;
     private Integer traveltimeMins;
     @NotNull
@@ -28,5 +29,13 @@ public class WarehouseNextHopsEntity {
 
     public void setTraveltimeMins(Integer traveltimeMins) {
         this.traveltimeMins = traveltimeMins;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
