@@ -1,23 +1,27 @@
 package at.fhtw.swen3.services.impl;
 
 import at.fhtw.swen3.persistence.entities.WarehouseEntity;
+import at.fhtw.swen3.persistence.repositories.HopRepository;
 import at.fhtw.swen3.persistence.repositories.WarehouseRepository;
 import at.fhtw.swen3.services.WarehouseService;
+import at.fhtw.swen3.services.dto.Hop;
 import at.fhtw.swen3.services.dto.Warehouse;
+import at.fhtw.swen3.services.mapper.HopMapper;
+import at.fhtw.swen3.services.mapper.WarehouseMapper;
 import at.fhtw.swen3.services.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@SpringBootApplication
 @RequiredArgsConstructor
 @Slf4j
 public class WarehouseServiceImpl implements WarehouseService {
-    WarehouseRepository warehouseRepository;
+    private final WarehouseRepository warehouseRepository;
+    private final HopRepository hopRepository;
     private final Validator validator;
 
 
@@ -29,14 +33,22 @@ public class WarehouseServiceImpl implements WarehouseService {
         log.info("Import Warehouse: " + warehouse);
     }
     @Override
-    public void exportWarehouses(){
+    public Hop exportWarehouses(String code){
+        Hop hop = HopMapper.INSTANCE.entityToDto(hopRepository.findByCode(code));
+
         log.info("Export Warehouse: ");
+
+        return hop;
     }
     @Override
     public List<Warehouse> getWarehouse(){
-
+        List<WarehouseEntity> warehouseEntities = warehouseRepository.findAll();
+        List<Warehouse> warehouses = new ArrayList<>();
+        for (WarehouseEntity entity: warehouseEntities) {
+            warehouses.add(WarehouseMapper.INSTANCE.entityToDto(entity));
+        }
         log.info("Get List of Warehouses");
 
-        return null;
+        return warehouses;
     }
 }

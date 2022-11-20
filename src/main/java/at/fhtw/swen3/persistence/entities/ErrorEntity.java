@@ -1,9 +1,12 @@
 package at.fhtw.swen3.persistence.entities;
 
+
+
 import javax.persistence.*;
 
 @Table(name = "error")
 @Entity(name = "error")
+
 public class ErrorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +22,7 @@ public class ErrorEntity {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
 
     public int getId() {
         return id;
