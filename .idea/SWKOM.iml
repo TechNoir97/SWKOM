@@ -12,7 +12,14 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/at/fhtw/swen3/services/impl/WarehouseServiceImpl.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/at/fhtw/swen3/services/impl/ParcelServiceImpl.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/at/fhtw/swen3/configuration/JacksonConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/at/fhtw/swen3/Swagger2SpringBoot.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="jpa" name="JPA">
       <configuration>
@@ -20,7 +27,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="SWKOM" />
-          <factory-entry name="entityManagerFactory" />
+          <factory-entry name="entityManagerFactory" value="2a23882b-4ba0-4721-aaa1-b97747757e6a" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>

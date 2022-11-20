@@ -3,10 +3,11 @@ package at.fhtw.swen3.persistence.entities;
 import javax.persistence.*;
 
 @Entity(name = "Transferwarehouse")
-@Table
+@Table(name = "transferwarehouse")
 public class TransferwarehouseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private int id;
     private String regionGeoJson;
     private String logisticsPartner;

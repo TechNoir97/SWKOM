@@ -4,10 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 @Entity(name = "recipient")
-@Table
+@Table(name = "recipient")
 public class RecipientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private int id;
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String name;
