@@ -22,12 +22,12 @@ public class ParcelEntity {
     @Column
     @DecimalMin("BigDecimal")
     private Float weight;
-    @Column
+
     @NotNull
     @ManyToOne
     @JoinColumn
     private RecipientEntity recipient;
-    @Column
+
     @NotNull
     @ManyToOne
     @JoinColumn

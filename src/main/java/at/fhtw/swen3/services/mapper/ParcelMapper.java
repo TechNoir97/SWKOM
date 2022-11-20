@@ -1,16 +1,19 @@
 package at.fhtw.swen3.services.mapper;
 
+import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.services.dto.*;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface ParcelMapper {
     ParcelMapper INSTANCE = Mappers.getMapper(ParcelMapper.class);
 
-/*
+
     @Mapping(source = "visitedHops.code", target = "visitedHops.code")
     @Mapping(source = "visitedHops.description", target = "visitedHops.description")
     @Mapping(source = "visitedHops.dateTime", target = "visitedHops.dateTime")
@@ -19,7 +22,7 @@ public interface ParcelMapper {
     @Mapping(source = "futureHops.description", target = "futureHops.description")
     @Mapping(source = "futureHops.dateTime", target = "futureHops.dateTime")
 
-    Parcel getModelFromDTO(TrackingInformation trackingInformation);
+    ParcelEntity getModelFromDTO(TrackingInformation trackingInformation);
     List<HopArrival> getHopArrivalDTO(List<HopArrivalEntity> hopArrivals);
     @Mapping(source = "visitedHops.code", target = "visitedHops.code")
     @Mapping(source = "visitedHops.description", target = "visitedHops.description")
@@ -29,11 +32,11 @@ public interface ParcelMapper {
     @Mapping(source = "futureHops.description", target = "futureHops.description")
     @Mapping(source = "futureHops.dateTime", target = "futureHops.dateTime")
 
-    TrackingInformation getModelFromEntity(Parcel parcel);
+    TrackingInformation getModelFromEntity(ParcelEntity parcel);
     List<HopArrivalEntity> getHopArrival(List<HopArrival> hopArrivals);
 
 
-*/
+
 
 
 

@@ -16,7 +16,7 @@ public class HopEntity {
     private String description;
     private Integer processingDelayMins;
     private String locationName;
-    @ManyToOne
+    @OneToOne
     @NotNull
     private GeoCoordinateEntity locationCoordinates;
 }

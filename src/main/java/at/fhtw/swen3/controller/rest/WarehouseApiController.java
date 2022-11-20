@@ -1,5 +1,6 @@
 package at.fhtw.swen3.controller.rest;
 
+import at.fhtw.swen3.services.WarehouseService;
 import at.fhtw.swen3.services.dto.Hop;
 import at.fhtw.swen3.services.dto.Warehouse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,14 +28,17 @@ public class WarehouseApiController implements WarehouseApi {
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
+    private final WarehouseService warehouseService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public WarehouseApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public WarehouseApiController(ObjectMapper objectMapper, HttpServletRequest request, WarehouseService warehouseService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.warehouseService = warehouseService;
     }
 
     public ResponseEntity<Warehouse> exportWarehouses() {
+        log.info("WarehouseApiController: exportWarehouse()");
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -50,6 +54,7 @@ public class WarehouseApiController implements WarehouseApi {
     }
 
     public ResponseEntity<Hop> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
+        log.info("WarehouseApiController: getWarehouse()");
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -66,6 +71,7 @@ public class WarehouseApiController implements WarehouseApi {
     }
 
     public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse warehouse) {
+        log.info("WarehouseApiController: importWarehouse()");
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
     }
