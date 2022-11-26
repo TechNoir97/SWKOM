@@ -37,7 +37,8 @@ public class HopArrival {
   @Schema(required = true, description = "Unique CODE of the hop.")
       @NotNull
 
-  @Pattern(regexp="^[A-Z]{4}\\d{1,4}$")   public String getCode() {
+  @Pattern(regexp="^[A-Z]{4}\\d{1,4}$")
+  public String getCode() {
     return code;
   }
 
