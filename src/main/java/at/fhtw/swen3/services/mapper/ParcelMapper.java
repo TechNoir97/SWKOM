@@ -14,7 +14,7 @@ public interface ParcelMapper {
     ParcelMapper INSTANCE = Mappers.getMapper(ParcelMapper.class);
 
 
-    @Mapping(source = "visitedHops.code", target = "visitedHops.code")
+   /* @Mapping(source = "visitedHops.code", target = "visitedHops.code")
     @Mapping(source = "visitedHops.description", target = "visitedHops.description")
     @Mapping(source = "visitedHops.dateTime", target = "visitedHops.dateTime")
 
@@ -34,11 +34,6 @@ public interface ParcelMapper {
 
     TrackingInformation getModelFromEntity(ParcelEntity parcel);
     List<HopArrivalEntity> getHopArrival(List<HopArrival> hopArrivals);
-
-
-
-
-
 
     @Mapping(source = "recipient.name", target = "recipient.name")
     @Mapping(source = "recipient.street", target = "recipient.street")
@@ -70,8 +65,13 @@ public interface ParcelMapper {
     @Mapping(source = "newParcelInfo.trackingId", target = "trackingId")
     @Mapping(source = "trackingInformation.state", target = "state")
     ParcelEntity from(Parcel parcel, TrackingInformation trackingInformation, NewParcelInfo newParcelInfo);
+    */
 
-
+    @Mapping(source = "parcel.weight", target = "weight")
+    @Mapping(source = "parcel.sender", target = "sender")
+    @Mapping(source = "parcel.recipient", target = "recipient")
+    ParcelEntity dtoToEntity(Parcel parcel);
+    Parcel entityToDto(ParcelEntity parcelEntity);
 
 
 }
