@@ -19,7 +19,7 @@ public class ParcelEntity {
     @Column(name = "id", nullable = false)
     private int id;
     @PositiveOrZero
-    @DecimalMin("BigDecimal")
+    @DecimalMin(value = "0.0")
     private Float weight;
 
     @NotNull
