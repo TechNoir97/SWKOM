@@ -9,6 +9,7 @@ import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
 import at.fhtw.swen3.services.dto.TrackingInformation;
 import at.fhtw.swen3.services.mapper.ParcelMapper;
+import at.fhtw.swen3.services.mapper.TrackingInformationMapper;
 import at.fhtw.swen3.services.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +80,7 @@ public class ParcelServiceImpl implements ParcelService {
     @Override
     public TrackingInformation trackParcel(String trackingId){
         ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
-        TrackingInformation information = ParcelMapper.INSTANCE.getModelFromEntity(parcel);
+        TrackingInformation information = TrackingInformationMapper.INSTANCE.entityToDto(parcel);
         return information;
     }
     @Override
