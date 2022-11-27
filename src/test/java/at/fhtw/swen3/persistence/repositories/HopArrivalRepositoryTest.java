@@ -19,19 +19,25 @@ class HopArrivalRepositoryTest {
     @Autowired
     private HopArrivalRepository hopArrivalRepository;
     private static HopArrivalEntity hopArrivalEntity;
+    @Autowired
+    private RecipientRepository recipientRepository;
 
-    @BeforeAll
-    static void setup(){
+    void setup(){
         ParcelEntity parcelEntity = new ParcelEntity();
         RecipientEntity recipientEntity = new RecipientEntity();
         recipientEntity.setName("Michi");
         recipientEntity.setCity("Bern");
+        recipientRepository.save(recipientEntity);
         parcelEntity.setRecipient(recipientEntity);
         recipientEntity.setName("Michi");
         recipientEntity.setCity("Bern");
+        recipientRepository.save(recipientEntity);
         parcelEntity.setSender(recipientEntity);
+        parcelEntity.setWeight(2F);
+        parcelEntity.setState(ParcelEntity.StateEnum.INTRANSPORT);
+        parcelRepository.save(parcelEntity);
         hopArrivalEntity = new HopArrivalEntity();
-        hopArrivalEntity.setCode("A1050");
+        hopArrivalEntity.setCode("WTTA014");
         hopArrivalEntity.setDescription("Not a suspicious box at all!");
         hopArrivalEntity.setDateTime(OffsetDateTime.now());
         hopArrivalEntity.setParcel(parcelEntity);
@@ -40,7 +46,7 @@ class HopArrivalRepositoryTest {
 
     @Test
     public void saveHopArrivalEntityTrue(){
-
+        setup();
 
         HopArrivalEntity hopArrival = hopArrivalRepository.save(hopArrivalEntity);
         assertEquals(hopArrival.getCode(), hopArrivalEntity.getCode());

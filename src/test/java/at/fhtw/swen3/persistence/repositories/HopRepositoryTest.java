@@ -21,7 +21,7 @@ class HopRepositoryTest {
     static void setup(){
         hopEntity = new HopEntity();
         hopEntity.setHopType("fast");
-        hopEntity.setCode("A-1050");
+        hopEntity.setCode("WTTA014");
         hopEntity.setDescription("This is a Description");
         hopEntity.setProcessingDelayMins(7);
         hopEntity.setLocationName("Some-Location");
