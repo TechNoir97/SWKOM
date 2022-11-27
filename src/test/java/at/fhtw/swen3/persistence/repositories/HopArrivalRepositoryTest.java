@@ -1,40 +1,52 @@
 package at.fhtw.swen3.persistence.repositories;
 
 import static org.junit.jupiter.api.Assertions.*;
-import at.fhtw.swen3.persistence.entities.ErrorEntity;
-import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
 import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
+import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.persistence.entities.RecipientEntity;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 import org.threeten.bp.OffsetDateTime;
 
 @SpringBootTest
+@TestPropertySource("/application-test.properties")
 class HopArrivalRepositoryTest {
-    /*
+    @Autowired
+    private ParcelRepository parcelRepository;
     @Autowired
     private HopArrivalRepository hopArrivalRepository;
     private static HopArrivalEntity hopArrivalEntity;
 
     @BeforeAll
     static void setup(){
+        ParcelEntity parcelEntity = new ParcelEntity();
+        RecipientEntity recipientEntity = new RecipientEntity();
+        recipientEntity.setName("Michi");
+        recipientEntity.setCity("Bern");
+        parcelEntity.setRecipient(recipientEntity);
+        recipientEntity.setName("Michi");
+        recipientEntity.setCity("Bern");
+        parcelEntity.setSender(recipientEntity);
         hopArrivalEntity = new HopArrivalEntity();
-        hopArrivalEntity.setCode("A-1050");
+        hopArrivalEntity.setCode("A1050");
         hopArrivalEntity.setDescription("Not a suspicious box at all!");
         hopArrivalEntity.setDateTime(OffsetDateTime.now());
+        hopArrivalEntity.setParcel(parcelEntity);
+
     }
 
-     */
     @Test
     public void saveHopArrivalEntityTrue(){
-        /*
+
+
         HopArrivalEntity hopArrival = hopArrivalRepository.save(hopArrivalEntity);
         assertEquals(hopArrival.getCode(), hopArrivalEntity.getCode());
         assertEquals(hopArrival.getDescription(), hopArrivalEntity.getDescription());
         assertEquals(hopArrival.getDateTime(), hopArrivalEntity.getDateTime());
         assertEquals(hopArrival.getId(), hopArrivalEntity.getId());
 
-         */
     }
 }
