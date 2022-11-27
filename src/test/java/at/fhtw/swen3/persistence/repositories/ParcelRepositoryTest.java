@@ -17,24 +17,29 @@ class ParcelRepositoryTest {
     @Autowired
     private ParcelRepository parcelRepository;
     private static ParcelEntity parcelEntity;
+    @Autowired
     private RecipientRepository recipientRepository;
 
-    @BeforeAll
-    static void setup(){
+
+    void setup(){
         parcelEntity = new ParcelEntity();
         RecipientEntity recipientEntity = new RecipientEntity();
         recipientEntity.setName("Michi");
         recipientEntity.setCity("Bern");
+        recipientRepository.save(recipientEntity);
         parcelEntity.setRecipient(recipientEntity);
         RecipientEntity recipientEntity1 = new RecipientEntity();
         recipientEntity1.setName("Michi");
         recipientEntity1.setCity("Bern");
+        recipientRepository.save(recipientEntity1);
         parcelEntity.setSender(recipientEntity1);
-
+        parcelEntity.setWeight(2F);
+        parcelEntity.setState(ParcelEntity.StateEnum.INTRANSPORT);
     }
 
     @Test
     public void saveParcelEntityTrue(){
+        setup();
         ParcelEntity parcel = parcelRepository.save(parcelEntity);
         assertEquals(parcel.getWeight(), parcelEntity.getWeight());
         assertEquals(parcel.getSender(), parcelEntity.getSender());
