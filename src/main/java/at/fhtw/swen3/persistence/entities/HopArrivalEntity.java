@@ -54,4 +54,12 @@ public class HopArrivalEntity {
     }
     public void setId(Integer id){this.id = id;
     }
+
+    public ParcelEntity getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(ParcelEntity parcel) {
+        this.parcel = parcel;
+    }
 }

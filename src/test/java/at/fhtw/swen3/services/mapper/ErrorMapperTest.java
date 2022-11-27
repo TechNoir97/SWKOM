@@ -17,7 +17,6 @@ class ErrorMapperTest {
     }
     @Test
     void entityToDto() {
-
         ErrorEntity errorEntity = new ErrorEntity();
         errorEntity.setErrorMessage("Test1");
         Error error = mapper.entityToDto(errorEntity);
@@ -28,12 +27,9 @@ class ErrorMapperTest {
 
     @Test
     void dtoToEntity() {
-
         Error error = new Error();
         error.setErrorMessage("Test2");
         ErrorEntity errorEntity = ErrorMapper.INSTANCE.dtoToEntity(error);
         assertEquals(error.getErrorMessage(), errorEntity.getErrorMessage());
-
-
     }
 }
