@@ -6,6 +6,7 @@ import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
 import at.fhtw.swen3.services.dto.TrackingInformation;
 import at.fhtw.swen3.services.mapper.ParcelMapper;
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -43,15 +44,29 @@ public class ParcelApiController implements ParcelApi {
     }
 
     public ResponseEntity<Void> reportParcelDelivery(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId) {
-        log.info("ParcelApiController: reportParcelDelivery()");
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+        try{
+            log.info("ParcelApiController: reportParcelDelivery()");
+            String accept = request.getHeader("Accept");
+            return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            System.out.println("Can't report delivery - ParcelApiController");
+            log.error("Can't report delivery - ParcelApiController",e);
+            return null;
+        }
+
     }
 
     public ResponseEntity<Void> reportParcelHop(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId,@Pattern(regexp="^[A-Z]{4}\\d{1,4}$") @Parameter(in = ParameterIn.PATH, description = "The Code of the hop (Warehouse or Truck).", required=true, schema=@Schema()) @PathVariable("code") String code) {
-        log.info("ParcelApiController: reportParcelHop()");
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+        try{
+            log.info("ParcelApiController: reportParcelHop()");
+            String accept = request.getHeader("Accept");
+            return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            System.out.println("Can't report parcel hop");
+            log.error("Can't report parcel hop",e);
+            return null;
+        }
+
     }
 
     public ResponseEntity<NewParcelInfo> submitParcel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel parcel) {
