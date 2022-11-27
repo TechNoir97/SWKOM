@@ -7,10 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@TestPropertySource("/application-test.properties")
 class HopRepositoryTest {
-    /*
     @Autowired
     private GeoCoordinateRepository geoCoordinateRepository;
     @Autowired
@@ -20,16 +21,13 @@ class HopRepositoryTest {
     static void setup(){
         hopEntity = new HopEntity();
         hopEntity.setHopType("fast");
-        hopEntity.setCode("A-1050");
+        hopEntity.setCode("WTTA014");
         hopEntity.setDescription("This is a Description");
         hopEntity.setProcessingDelayMins(7);
         hopEntity.setLocationName("Some-Location");
     }
-
-     */
     @Test
     public void saveHopEntity(){
-        /*
         GeoCoordinateEntity geoCoordinateEntity = new GeoCoordinateEntity();
         geoCoordinateEntity.setLat(11.595);
         geoCoordinateEntity.setLon(43.148056);
@@ -44,6 +42,5 @@ class HopRepositoryTest {
         assertEquals(hop.getLocationCoordinates(), hopEntity.getLocationCoordinates());
         assertEquals(hop.getProcessingDelayMins(), hopEntity.getProcessingDelayMins());
 
-         */
     }
 }
