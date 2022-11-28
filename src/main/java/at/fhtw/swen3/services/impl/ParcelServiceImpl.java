@@ -4,6 +4,7 @@ import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
+import at.fhtw.swen3.services.BLException;
 import at.fhtw.swen3.services.ParcelService;
 import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
@@ -33,7 +34,7 @@ public class ParcelServiceImpl implements ParcelService {
     private final Validator validator;
 
     @Override
-    public void submitNewParcel(ParcelEntity newParcel){
+    public void submitNewParcel(ParcelEntity newParcel) throws BLException {
         log.info("ParcelServiceImpl: submitNewParcel(): " + newParcel);
         validator.validate(newParcel);
         parcelRepo.save(newParcel);
@@ -56,7 +57,7 @@ public class ParcelServiceImpl implements ParcelService {
         parcelRepo.deleteById(id);
     }
     @Override
-    public void updateParcelInfo(int id, ParcelEntity parcelEntity){
+    public void updateParcelInfo(int id, ParcelEntity parcelEntity) throws BLException {
         log.info("ParcelServiceImpl: updateParcelInfo(): " + id + "was updated");
         validator.validate(parcelEntity);
         parcelRepo.save(parcelEntity);

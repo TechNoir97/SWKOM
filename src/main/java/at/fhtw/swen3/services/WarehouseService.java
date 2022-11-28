@@ -7,7 +7,7 @@ import at.fhtw.swen3.services.dto.Warehouse;
 import java.util.List;
 
 public interface WarehouseService {
-    public void importWarehouses(WarehouseEntity warehouse);
+    public void importWarehouses(WarehouseEntity warehouse) throws BLException;
     public Hop exportWarehouses(String hop);
     public List<Warehouse> getWarehouse();
 

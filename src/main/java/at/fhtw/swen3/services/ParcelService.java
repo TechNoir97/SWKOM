@@ -12,10 +12,10 @@ import java.util.List;
 public interface ParcelService {
 
 
-    public void submitNewParcel(ParcelEntity newParcel);
+    public void submitNewParcel(ParcelEntity newParcel) throws BLException;
     public List<Parcel> getParcels();
     public void deleteParcelById(int id);
-    public void updateParcelInfo(int id, ParcelEntity parcelEntity);
+    public void updateParcelInfo(int id, ParcelEntity parcelEntity) throws BLException;
     public void reportParcelDelivery(String trackingId);
     public void reportParcelHop(String trackingId, String code);
     public TrackingInformation trackParcel(String trackingId);
