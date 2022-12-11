@@ -24,10 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ParcelServiceImpl implements ParcelService {
     private final ParcelRepository parcelRepo;
     private final RecipientRepository recipientRepo;

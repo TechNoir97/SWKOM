@@ -18,9 +18,9 @@ import javax.validation.ConstraintViolation;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseRepository warehouseRepository;
     private final HopRepository hopRepository;
