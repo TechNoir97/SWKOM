@@ -1,6 +1,8 @@
 package at.fhtw.swen3.controller.rest;
 
+import at.fhtw.swen3.controller.ParcelApi;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.services.BLException;
 import at.fhtw.swen3.services.ParcelService;
 import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
@@ -11,13 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import java.io.IOException;
 
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 @RestController
+@Slf4j
 public class ParcelApiController implements ParcelApi {
 
     private static final Logger log = LoggerFactory.getLogger(ParcelApiController.class);
@@ -69,6 +71,10 @@ public class ParcelApiController implements ParcelApi {
 
     }
 
+    @RequestMapping(value = "/parcel",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
     public ResponseEntity<NewParcelInfo> submitParcel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel parcel) {
         log.info("ParcelApiController: submitParcel()");
         String accept = request.getHeader("Accept");
@@ -77,7 +83,7 @@ public class ParcelApiController implements ParcelApi {
                 ParcelEntity parcelEntity = ParcelMapper.INSTANCE.dtoToEntity(parcel);
                 parcelService.submitNewParcel(parcelEntity);
                 return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.CREATED);//TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<NewParcelInfo>(HttpStatus.CREATED);
                 //TODO muss aber noch implementiert werden

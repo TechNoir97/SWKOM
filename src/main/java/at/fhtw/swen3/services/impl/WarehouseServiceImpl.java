@@ -3,6 +3,7 @@ package at.fhtw.swen3.services.impl;
 import at.fhtw.swen3.persistence.entities.WarehouseEntity;
 import at.fhtw.swen3.persistence.repositories.HopRepository;
 import at.fhtw.swen3.persistence.repositories.WarehouseRepository;
+import at.fhtw.swen3.services.BLException;
 import at.fhtw.swen3.services.WarehouseService;
 import at.fhtw.swen3.services.dto.Hop;
 import at.fhtw.swen3.services.dto.Warehouse;
@@ -13,13 +14,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
+
+import javax.validation.ConstraintViolation;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseRepository warehouseRepository;
     private final HopRepository hopRepository;
@@ -27,12 +30,16 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 
     @Override
-    public void importWarehouses(WarehouseEntity warehouse){
+    public void importWarehouses(WarehouseEntity warehouse) throws BLException {
 
         validator.validate(warehouse);
-        warehouseRepository.save(warehouse);
+        try {
+            warehouseRepository.save(warehouse);
 
-        log.info("Import Warehouse: " + warehouse);
+            log.info("Import Warehouse: " + warehouse);
+        }catch (Exception e){
+            throw new BLException(2L, "Failed to store warehouse", e);
+        }
     }
     @Override
     public Hop exportWarehouses(String code){
