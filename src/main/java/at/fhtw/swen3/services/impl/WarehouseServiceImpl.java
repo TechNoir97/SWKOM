@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+
 import javax.validation.ConstraintViolation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public void importWarehouses(WarehouseEntity warehouse) throws BLException {
+
         validator.validate(warehouse);
         try {
             warehouseRepository.save(warehouse);
@@ -40,21 +43,36 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
     @Override
     public Hop exportWarehouses(String code){
-        Hop hop = HopMapper.INSTANCE.entityToDto(hopRepository.findByCode(code));
+        try {
+            Hop hop = HopMapper.INSTANCE.entityToDto(hopRepository.findByCode(code));
+            log.info("Export Warehouse: ");
+            return hop;
+        }catch (Exception e) {
+            System.out.println("Could not get Warehouse");
+            log.error("Could not get Warehouse",e);
 
-        log.info("Export Warehouse: ");
-
-        return hop;
+        }
+        return null;
     }
     @Override
     public List<Warehouse> getWarehouse(){
         List<WarehouseEntity> warehouseEntities = warehouseRepository.findAll();
         List<Warehouse> warehouses = new ArrayList<>();
-        for (WarehouseEntity entity: warehouseEntities) {
-            warehouses.add(WarehouseMapper.INSTANCE.entityToDto(entity));
-        }
-        log.info("Get List of Warehouses");
+        try {
+            for (WarehouseEntity entity : warehouseEntities) {
+                warehouses.add(WarehouseMapper.INSTANCE.entityToDto(entity));
+                log.info("Get List of Warehouses");
+                return warehouses;
+            }
+        }catch(Exception e){
+            System.out.println("Could not get Warehouse");
+            log.error("Could not get Warehouse",e);
 
-        return warehouses;
-    }
+            }
+        return null;
+        }
+
+
+
+
 }

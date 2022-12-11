@@ -74,9 +74,16 @@ public class WarehouseApiController implements WarehouseApi {
     }
 
     public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse warehouse) {
-        log.info("WarehouseApiController: importWarehouse()");
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
+        try{
+            log.info("WarehouseApiController: importWarehouse()");
+            String accept = request.getHeader("Accept");
+            return new ResponseEntity<Void>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
+        }catch (Exception e){
+            System.out.println("Could not import warehouses - WarehouseApiController");
+            log.error("Could not import warehouses - WarehouseApiController",e);
+            return null;
+        }
+
     }
 
 }
