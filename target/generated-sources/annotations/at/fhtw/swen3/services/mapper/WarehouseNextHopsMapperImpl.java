@@ -6,11 +6,11 @@ import at.fhtw.swen3.persistence.entities.WarehouseNextHopsEntity;
 import at.fhtw.swen3.services.dto.GeoCoordinate;
 import at.fhtw.swen3.services.dto.Hop;
 import at.fhtw.swen3.services.dto.WarehouseNextHops;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-27T13:22:38+0100",
+    date = "2022-12-11T12:22:02+0100",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 public class WarehouseNextHopsMapperImpl implements WarehouseNextHopsMapper {
