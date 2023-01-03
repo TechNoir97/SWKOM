@@ -76,11 +76,12 @@ public class ParcelApiController implements ParcelApi {
             consumes = { "application/json" },
             method = RequestMethod.POST)
     public ResponseEntity<NewParcelInfo> submitParcel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel parcel) {
-        log.info("ParcelApiController: submitParcel()");
+        log.info("ParcelApiController: submitParcel() -> Parcel Recipient: " + parcel.getRecipient().getName());
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
                 ParcelEntity parcelEntity = ParcelMapper.INSTANCE.dtoToEntity(parcel);
+                log.info("ParcelApiController: submitParcel() -> ParcelEntity Recipient: " + parcelEntity.getRecipient().getName());
                 parcelService.submitNewParcel(parcelEntity);
                 return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.CREATED);//TODO muss aber noch implementiert werden
             } catch (Exception e) {
