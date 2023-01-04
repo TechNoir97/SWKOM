@@ -1,6 +1,7 @@
 package at.fhtw.swen3.persistence.entities;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity(name = "Parcel")
 @Table(name = "parcel")
+@NoArgsConstructor
 public class ParcelEntity {
     //From parcel
     @Id
@@ -80,15 +82,15 @@ public class ParcelEntity {
             return null;
         }
     }
-
-    @NotNull
-    private StateEnum state;
+    //TODO Die @NotNull müssen wieder auskommentiert werden
+    //@NotNull
+    private StateEnum state = StateEnum.PICKUP;
 
     @OneToMany
-    @NotNull
+    //@NotNull
     private List<HopArrivalEntity> visitedHops = new ArrayList<HopArrivalEntity>();
     @OneToMany
-    @NotNull
+    //@NotNull
     private List<HopArrivalEntity> futureHops = new ArrayList<HopArrivalEntity>();
 
     public Float getWeight() {

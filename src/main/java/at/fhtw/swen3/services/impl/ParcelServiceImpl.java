@@ -34,7 +34,7 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public void submitNewParcel(ParcelEntity newParcel) throws BLException {
-        log.info("ParcelServiceImpl: submitNewParcel(): " + newParcel);
+        log.info("ParcelServiceImpl: submitNewParcel() -> Name of the sender: " + newParcel.getSender().getName());
         validator.validate(newParcel);
         parcelRepo.save(newParcel);
         recipientRepo.save(newParcel.getRecipient());
