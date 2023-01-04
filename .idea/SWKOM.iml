@@ -27,7 +27,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="SWKOM" />
-          <factory-entry name="entityManagerFactory" value="2a23882b-4ba0-4721-aaa1-b97747757e6a" />
+          <factory-entry name="entityManagerFactory" value="860f99d1-ea2b-472c-bad4-eab0208eda9b" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
