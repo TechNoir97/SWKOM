@@ -14,16 +14,16 @@ public class RecipientEntity {
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String name;
     @Column(name = "street")
-    @Pattern(regexp = "[A-Z][a-z-äöüÄÖÜßéÉèÈêÊ.]+ ([a-z]?\\d?\\/?)+")
+    @Pattern(regexp = "[A-Z][a-z-äöüÄÖÜßéÉèÈêÊ.]+ ?([a-z]?\\d?\\/?)+")
     private String street;
-    @Column(name = "postalCode")
+    @Column(name = "postal_code")
     @Pattern(regexp = "A-\\d{4}")
     private String postalCode;
     @Column(name = "city")
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String city;
     @Column(name = "country")
-    @Pattern(regexp = ".*((\\bAustria\\b)|(\\bÖsterreich\\b))$")
+    //@Pattern(regexp = ".*((\\bAustria\\b)|(\\bÖsterreich\\b))$")
     private String country;
 
     public String getCity() {
@@ -64,5 +64,9 @@ public class RecipientEntity {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public int getId() {
+        return id;
     }
 }
