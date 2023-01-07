@@ -48,12 +48,11 @@ public class WarehouseApiController implements WarehouseApi {
                 return new ResponseEntity<Warehouse>(objectMapper.readValue("\"\"", Warehouse.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Warehouse>(HttpStatus.OK);
-                //TODO muss aber noch implementiert werden
+                return new ResponseEntity<Warehouse>(HttpStatus.BAD_REQUEST);
             }
         }
 
-        return new ResponseEntity<Warehouse>(HttpStatus.OK);//TODO muss aber noch implementiert werden
+        return new ResponseEntity<Warehouse>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<Hop> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
@@ -65,12 +64,12 @@ public class WarehouseApiController implements WarehouseApi {
                 //TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Hop>(HttpStatus.OK);
-                //TODO muss aber noch implementiert werden
+                return new ResponseEntity<Hop>(HttpStatus.BAD_GATEWAY);
+
             }
         }
 
-        return new ResponseEntity<Hop>(HttpStatus.OK);  //TODO muss aber noch implementiert werden
+        return new ResponseEntity<Hop>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse warehouse) {

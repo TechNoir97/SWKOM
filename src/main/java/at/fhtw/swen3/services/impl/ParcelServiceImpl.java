@@ -2,6 +2,7 @@ package at.fhtw.swen3.services.impl;
 
 import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.persistence.entities.RecipientEntity;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
 import at.fhtw.swen3.services.BLException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -105,8 +107,16 @@ public class ParcelServiceImpl implements ParcelService {
     }
     @Override
     public NewParcelInfo transitionParcel(String trackingId, Parcel parcel){
-        //TODO noch keine Ahnung was diese Funktion genau machen soll
-        return null;
+        //TODO soll parcel von logistics partner übernehmen
+        try{
+            NewParcelInfo trackingID = new NewParcelInfo();
+            trackingID = parcel.get
+            return ;
+        }catch (Exception e){
+            System.out.println("Could not transfer parcel -ParcelServiceImpl");
+            log.error("Could not transfer parcel -ParcelServiceImpl", e);
+            return null;
+        }
     }
 
 

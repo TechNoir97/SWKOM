@@ -86,12 +86,11 @@ public class ParcelApiController implements ParcelApi {
                 return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.CREATED);//TODO muss aber noch implementiert werden
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<NewParcelInfo>(HttpStatus.CREATED);
-                //TODO muss aber noch implementiert werden
+                return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_REQUEST);
             }
         }
 
-        return new ResponseEntity<NewParcelInfo>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
+        return new ResponseEntity<NewParcelInfo>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<TrackingInformation> trackParcel(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId) {
@@ -103,12 +102,12 @@ public class ParcelApiController implements ParcelApi {
                 //TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<TrackingInformation>(HttpStatus.OK);
-                //TODO muss aber noch implementiert werden ;
+                return new ResponseEntity<TrackingInformation>(HttpStatus.BAD_REQUEST);
+
             }
         }
 
-        return new ResponseEntity<TrackingInformation>(HttpStatus.OK); //TODO muss aber noch implementiert werden
+        return new ResponseEntity<TrackingInformation>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<NewParcelInfo> transitionParcel(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel body) {
@@ -119,12 +118,12 @@ public class ParcelApiController implements ParcelApi {
                 return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<NewParcelInfo>(HttpStatus.OK);
-                //TODO muss aber noch implementiert werden
+                return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_GATEWAY);
+
             }
         }
 
-        return new ResponseEntity<NewParcelInfo>(HttpStatus.OK);//TODO muss aber noch implementiert werden
+        return new ResponseEntity<NewParcelInfo>(HttpStatus.CONFLICT);
     }
 
 }
