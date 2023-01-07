@@ -10,18 +10,19 @@ public class RecipientEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private int id;
+    @Column(name = "name")
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String name;
-
+    @Column(name = "street")
     @Pattern(regexp = "[A-Z][a-z-äöüÄÖÜßéÉèÈêÊ.]+ ([a-z]?\\d?\\/?)+")
     private String street;
-
+    @Column(name = "postalCode")
     @Pattern(regexp = "A-\\d{4}")
     private String postalCode;
-
+    @Column(name = "city")
     @Pattern(regexp = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$")
     private String city;
-    @Column
+    @Column(name = "country")
     @Pattern(regexp = ".*((\\bAustria\\b)|(\\bÖsterreich\\b))$")
     private String country;
 
