@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity(name = "Warehouse")
 @Table(name = "warehouse")
-public class WarehouseEntity {
+public class WarehouseEntity extends HopEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

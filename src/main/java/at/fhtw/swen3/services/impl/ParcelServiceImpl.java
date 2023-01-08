@@ -45,8 +45,8 @@ public class ParcelServiceImpl implements ParcelService {
         //Get the coordinates
         BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
         GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
-
         GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
+
 
         //Save the data into the database
         recipientRepo.save(newParcel.getRecipient());

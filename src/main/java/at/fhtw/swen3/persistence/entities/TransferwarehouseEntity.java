@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity(name = "Transferwarehouse")
 @Table(name = "transferwarehouse")
-public class TransferwarehouseEntity {
+public class TransferwarehouseEntity extends HopEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
