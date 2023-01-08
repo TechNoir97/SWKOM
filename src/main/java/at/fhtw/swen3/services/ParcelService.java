@@ -19,5 +19,5 @@ public interface ParcelService {
     public void reportParcelDelivery(String trackingId);
     public void reportParcelHop(String trackingId, String code);
     public TrackingInformation trackParcel(String trackingId);
-    public NewParcelInfo transitionParcel(String trackingId, Parcel parcel);
+    public NewParcelInfo transitionParcel(String trackingId, Parcel parcel) throws BLException;
 }

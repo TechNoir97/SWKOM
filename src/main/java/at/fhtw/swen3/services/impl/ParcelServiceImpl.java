@@ -122,9 +122,31 @@ public class ParcelServiceImpl implements ParcelService {
 
     }
     @Override
-    public NewParcelInfo transitionParcel(String trackingId, Parcel parcel){
-        //TODO noch keine Ahnung was diese Funktion genau machen soll
-        return null;
+    public NewParcelInfo transitionParcel(String trackingId, Parcel parcel) throws BLException {
+        validator.validate(parcel);
+
+        ParcelEntity transParcel = new ParcelEntity();
+        transParcel = ParcelMapper.INSTANCE.dtoToEntity(parcel);
+        //Get the coordinates
+        BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
+        GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(transParcel.getRecipient());
+        GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(transParcel.getSender());
+        transParcel.setTrackingId(trackingId);
+
+        //Save the data into the database
+        recipientRepo.save(transParcel.getRecipient());
+        recipientRepo.save(transParcel.getSender());
+
+        recipientCoordinates.setId(recipientRepo.findByName(parcel.getRecipient().getName()).getId());
+        senderCoordinates.setId(recipientRepo.findByName(parcel.getSender().getName()).getId());
+        geoCoordinateRepository.save(recipientCoordinates);
+        geoCoordinateRepository.save(senderCoordinates);
+
+        parcelRepo.save(transParcel);
+        NewParcelInfo parcelInfo = new NewParcelInfo();
+        parcelInfo.setTrackingId(transParcel.getTrackingId());
+
+        return parcelInfo;
     }
 
 

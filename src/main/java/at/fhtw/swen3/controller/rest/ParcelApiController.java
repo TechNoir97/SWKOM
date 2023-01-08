@@ -98,6 +98,8 @@ public class ParcelApiController implements ParcelApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
+                TrackingInformation newTrackinginformation = parcelService.trackParcel(trackingId);
+
                 return new ResponseEntity<TrackingInformation>(objectMapper.readValue("{\n  \"visitedHops\" : [ {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  }, {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  } ],\n  \"futureHops\" : [ null, null ],\n  \"state\" : \"Pickup\"\n}", TrackingInformation.class), HttpStatus.OK);
                 //TODO muss aber noch implementiert werden
             } catch (IOException e) {
@@ -115,8 +117,9 @@ public class ParcelApiController implements ParcelApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+                parcelService.transitionParcel(trackingId, body);
+                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ8\"\n}", NewParcelInfo.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_GATEWAY);
 
