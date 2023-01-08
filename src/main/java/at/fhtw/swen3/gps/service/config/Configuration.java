@@ -27,7 +27,7 @@ public class Configuration {
     }
 
     private void load() throws IOException{
-        InputStream in = getClass().getClassLoader().getResourceAsStream("config.properties");
+        InputStream in = getClass().getClassLoader().getResourceAsStream("application.properties");
         properties.load(in);
     }
 
