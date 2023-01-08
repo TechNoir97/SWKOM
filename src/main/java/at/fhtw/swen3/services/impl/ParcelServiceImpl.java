@@ -4,6 +4,7 @@ import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
+import at.fhtw.swen3.services.BLException;
 import at.fhtw.swen3.services.ParcelService;
 import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Parcel;
@@ -23,22 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ParcelServiceImpl implements ParcelService {
     private final ParcelRepository parcelRepo;
     private final RecipientRepository recipientRepo;
     private final Validator validator;
 
     @Override
-    public void submitNewParcel(ParcelEntity newParcel){
-        log.info("ParcelServiceImpl: submitNewParcel(): " + newParcel);
+    public void submitNewParcel(ParcelEntity newParcel) throws BLException {
+        log.info("ParcelServiceImpl: submitNewParcel() -> Name of the sender: " + newParcel.getSender().getName());
         validator.validate(newParcel);
-        parcelRepo.save(newParcel);
         recipientRepo.save(newParcel.getRecipient());
         recipientRepo.save(newParcel.getSender());
+        parcelRepo.save(newParcel);
     }
     @Override
     public List<Parcel> getParcels(){
@@ -63,7 +63,7 @@ public class ParcelServiceImpl implements ParcelService {
         parcelRepo.deleteById(id);
     }
     @Override
-    public void updateParcelInfo(int id, ParcelEntity parcelEntity){
+    public void updateParcelInfo(int id, ParcelEntity parcelEntity) throws BLException {
         log.info("ParcelServiceImpl: updateParcelInfo(): " + id + "was updated");
         validator.validate(parcelEntity);
         parcelRepo.save(parcelEntity);

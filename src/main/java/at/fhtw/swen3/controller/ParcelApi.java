@@ -3,7 +3,7 @@
  * https://github.com/swagger-api/swagger-codegen
  * Do not edit the class manually.
  */
-package at.fhtw.swen3.controller.rest;
+package at.fhtw.swen3.controller;
 
 import at.fhtw.swen3.services.dto.NewParcelInfo;
 import at.fhtw.swen3.services.dto.Error;
@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,8 @@ import javax.validation.constraints.*;
 @Validated
 public interface ParcelApi {
 
-    @Operation(summary = "Report that a Parcel has been delivered at it's final destination address. ", description = "", tags={ "staff" })
+
+    @Operation(operationId = "reportParcelDelivery", summary = "Report that a Parcel has been delivered at it's final destination address. ", description = "", tags={ "staff" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successfully reported hop."),
         
@@ -43,7 +45,7 @@ public interface ParcelApi {
     ResponseEntity<Void> reportParcelDelivery(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId);
 
 
-    @Operation(summary = "Report that a Parcel has arrived at a certain hop either Warehouse or Truck. ", description = "", tags={ "staff" })
+    @Operation(operationId = "reportParcelHop", summary = "Report that a Parcel has arrived at a certain hop either Warehouse or Truck. ", description = "", tags={ "staff" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successfully reported hop."),
         
@@ -56,7 +58,7 @@ public interface ParcelApi {
     ResponseEntity<Void> reportParcelHop(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId, @Pattern(regexp="^[A-Z]{4}\\d{1,4}$") @Parameter(in = ParameterIn.PATH, description = "The Code of the hop (Warehouse or Truck).", required=true, schema=@Schema()) @PathVariable("code") String code);
 
 
-    @Operation(summary = "Submit a new parcel to the logistics service. ", description = "", tags={ "sender" })
+    @Operation(operationId = "submitParcel", summary = "Submit a new parcel to the logistics service. ", description = "", tags={ "sender" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "201", description = "Successfully submitted the new parcel", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NewParcelInfo.class))),
         
@@ -70,7 +72,7 @@ public interface ParcelApi {
     ResponseEntity<NewParcelInfo> submitParcel(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel body);
 
 
-    @Operation(summary = "Find the latest state of a parcel by its tracking ID. ", description = "", tags={ "recipient" })
+    @Operation(operationId = "trackParcel", summary = "Find the latest state of a parcel by its tracking ID. ", description = "", tags={ "recipient" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Parcel exists, here's the tracking information.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TrackingInformation.class))),
         
@@ -83,7 +85,7 @@ public interface ParcelApi {
     ResponseEntity<TrackingInformation> trackParcel(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId);
 
 
-    @Operation(summary = "Transfer an existing parcel into the system from the service of a logistics partner. ", description = "", tags={ "logisticsPartner" })
+    @Operation(operationId = "transitionParcel", summary = "Transfer an existing parcel into the system from the service of a logistics partner. ", description = "", tags={ "logisticsPartner" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successfully transitioned the parcel", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NewParcelInfo.class))),
         
