@@ -1,8 +1,10 @@
 package at.fhtw.swen3.services.impl;
 
+import at.fhtw.swen3.gps.service.impl.BingEncodingProxy;
+import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
 import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
-import at.fhtw.swen3.persistence.entities.RecipientEntity;
+import at.fhtw.swen3.persistence.repositories.GeoCoordinateRepository;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
 import at.fhtw.swen3.services.BLException;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,14 +33,29 @@ import java.util.Set;
 public class ParcelServiceImpl implements ParcelService {
     private final ParcelRepository parcelRepo;
     private final RecipientRepository recipientRepo;
+    private final GeoCoordinateRepository geoCoordinateRepository;
     private final Validator validator;
 
     @Override
     public void submitNewParcel(ParcelEntity newParcel) throws BLException {
         log.info("ParcelServiceImpl: submitNewParcel() -> Name of the sender: " + newParcel.getSender().getName());
+        //Validate the data of the new parcel
         validator.validate(newParcel);
+
+        //Get the coordinates
+        BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
+        GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
+
+        GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
+
+        //Save the data into the database
         recipientRepo.save(newParcel.getRecipient());
         recipientRepo.save(newParcel.getSender());
+        recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
+        senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
+        geoCoordinateRepository.save(recipientCoordinates);
+        geoCoordinateRepository.save(senderCoordinates);
+
         parcelRepo.save(newParcel);
     }
     @Override
@@ -107,16 +123,8 @@ public class ParcelServiceImpl implements ParcelService {
     }
     @Override
     public NewParcelInfo transitionParcel(String trackingId, Parcel parcel){
-        //TODO soll parcel von logistics partner übernehmen
-        try{
-            NewParcelInfo trackingID = new NewParcelInfo();
-            trackingID = parcel.get
-            return ;
-        }catch (Exception e){
-            System.out.println("Could not transfer parcel -ParcelServiceImpl");
-            log.error("Could not transfer parcel -ParcelServiceImpl", e);
-            return null;
-        }
+        //TODO noch keine Ahnung was diese Funktion genau machen soll
+        return null;
     }
 
 
