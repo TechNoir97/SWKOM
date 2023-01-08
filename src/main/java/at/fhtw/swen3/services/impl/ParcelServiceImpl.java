@@ -1,7 +1,10 @@
 package at.fhtw.swen3.services.impl;
 
+import at.fhtw.swen3.gps.service.impl.BingEncodingProxy;
+import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
 import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.persistence.repositories.GeoCoordinateRepository;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
 import at.fhtw.swen3.services.BLException;
@@ -30,14 +33,29 @@ import java.util.Set;
 public class ParcelServiceImpl implements ParcelService {
     private final ParcelRepository parcelRepo;
     private final RecipientRepository recipientRepo;
+    private final GeoCoordinateRepository geoCoordinateRepository;
     private final Validator validator;
 
     @Override
     public void submitNewParcel(ParcelEntity newParcel) throws BLException {
         log.info("ParcelServiceImpl: submitNewParcel() -> Name of the sender: " + newParcel.getSender().getName());
+        //Validate the data of the new parcel
         validator.validate(newParcel);
+
+        //Get the coordinates
+        BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
+        GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
+
+        GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
+
+        //Save the data into the database
         recipientRepo.save(newParcel.getRecipient());
         recipientRepo.save(newParcel.getSender());
+        recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
+        senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
+        geoCoordinateRepository.save(recipientCoordinates);
+        geoCoordinateRepository.save(senderCoordinates);
+
         parcelRepo.save(newParcel);
     }
     @Override
