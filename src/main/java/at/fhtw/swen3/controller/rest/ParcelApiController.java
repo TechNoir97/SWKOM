@@ -14,11 +14,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -82,8 +84,10 @@ public class ParcelApiController implements ParcelApi {
             try {
                 ParcelEntity parcelEntity = ParcelMapper.INSTANCE.dtoToEntity(parcel);
                 log.info("ParcelApiController: submitParcel() -> ParcelEntity Recipient: " + parcelEntity.getRecipient().getName());
-                parcelService.submitNewParcel(parcelEntity);
-                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.CREATED);//TODO muss aber noch implementiert werden
+
+
+                NewParcelInfo newParcelInfo = parcelService.submitNewParcel(parcelEntity);
+                return new ResponseEntity<NewParcelInfo>(newParcelInfo, HttpStatus.CREATED);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_REQUEST);
@@ -99,10 +103,8 @@ public class ParcelApiController implements ParcelApi {
         if (accept != null && accept.contains("application/json")) {
             try {
                 TrackingInformation newTrackinginformation = parcelService.trackParcel(trackingId);
-
-                return new ResponseEntity<TrackingInformation>(objectMapper.readValue("{\n  \"visitedHops\" : [ {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  }, {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  } ],\n  \"futureHops\" : [ null, null ],\n  \"state\" : \"Pickup\"\n}", TrackingInformation.class), HttpStatus.OK);
-                //TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+                return new ResponseEntity<TrackingInformation>(newTrackinginformation, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<TrackingInformation>(HttpStatus.BAD_REQUEST);
 

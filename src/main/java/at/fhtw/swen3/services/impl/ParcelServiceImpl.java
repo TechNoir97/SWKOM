@@ -2,7 +2,6 @@ package at.fhtw.swen3.services.impl;
 
 import at.fhtw.swen3.gps.service.impl.BingEncodingProxy;
 import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
-import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
 import at.fhtw.swen3.persistence.repositories.GeoCoordinateRepository;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
@@ -18,14 +17,11 @@ import at.fhtw.swen3.services.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -37,11 +33,14 @@ public class ParcelServiceImpl implements ParcelService {
     private final Validator validator;
 
     @Override
-    public void submitNewParcel(ParcelEntity newParcel) throws BLException {
+    public NewParcelInfo submitNewParcel(ParcelEntity newParcel) throws BLException {
         log.info("ParcelServiceImpl: submitNewParcel() -> Name of the sender: " + newParcel.getSender().getName());
         //Validate the data of the new parcel
         validator.validate(newParcel);
-
+        String id = RandomStringUtils.randomAlphanumeric(9);
+        id = id.toUpperCase();
+        System.out.println("ABABABABABABABABABABABABAB" + id + "ABABABABABABABABABABABABAB");
+        newParcel.setTrackingId(id);
         //Get the coordinates
         BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
         GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
@@ -57,6 +56,9 @@ public class ParcelServiceImpl implements ParcelService {
         geoCoordinateRepository.save(senderCoordinates);
 
         parcelRepo.save(newParcel);
+        NewParcelInfo newParcelInfo = new NewParcelInfo();
+        newParcelInfo.setTrackingId(newParcel.getTrackingId());
+        return newParcelInfo;
     }
     @Override
     public List<Parcel> getParcels(){
@@ -108,11 +110,14 @@ public class ParcelServiceImpl implements ParcelService {
         }
         */
     }
+
     @Override
     public TrackingInformation trackParcel(String trackingId){
         try{
             ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
-            TrackingInformation information = TrackingInformationMapper.INSTANCE.entityToDto(parcel);
+            TrackingInformation information = new TrackingInformation();
+            information = TrackingInformationMapper.INSTANCE.entityToDto(parcel);
+            System.out.println(information);
             return information;
         }catch (Exception e){
             System.out.println("Could not track parcel - ParcelServiceImpl");
