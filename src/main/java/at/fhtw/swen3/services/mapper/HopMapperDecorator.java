@@ -9,7 +9,7 @@ import at.fhtw.swen3.services.dto.Warehouse;
 import at.fhtw.swen3.persistence.entities.WarehouseEntity;
 public abstract class HopMapperDecorator implements HopMapper {
 
-   /* private final HopMapper delegate;
+    private final HopMapper delegate;
 
     protected HopMapperDecorator(HopMapper delegate) {
         this.delegate = delegate;
@@ -37,5 +37,5 @@ public abstract class HopMapperDecorator implements HopMapper {
             return WarehouseMapper.INSTANCE.entityToDto(warehouse);
         }
         return delegate.entityToDto(hop);
-    }*/
+    }
 }

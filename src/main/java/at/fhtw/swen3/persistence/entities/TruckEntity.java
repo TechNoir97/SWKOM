@@ -3,12 +3,13 @@ package at.fhtw.swen3.persistence.entities;
 import javax.persistence.*;
 
 @Entity(name = "Truck")
-@Table(name = "truck")
+@Table(name = "Truck")
 public class TruckEntity extends HopEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private int id;
+    @Column(columnDefinition = "text")
     private String regionGeoJson;
     private String numberPlate;
 
