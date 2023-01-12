@@ -25,7 +25,8 @@ public class RecipientEntity {
     @Column(name = "country")
     //@Pattern(regexp = ".*((\\bAustria\\b)|(\\bÖsterreich\\b))$")
     private String country;
-
+    @Column(name = "coordinateId")
+    private int coordinateId;
     public String getCity() {
         return city;
     }
@@ -68,5 +69,13 @@ public class RecipientEntity {
 
     public int getId() {
         return id;
+    }
+
+    public int getCoordinateId() {
+        return coordinateId;
+    }
+
+    public void setCoordinateId(int coordinateId) {
+        this.coordinateId = coordinateId;
     }
 }

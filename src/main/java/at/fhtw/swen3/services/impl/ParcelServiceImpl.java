@@ -47,14 +47,16 @@ public class ParcelServiceImpl implements ParcelService {
         GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
         GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
 
-
         //Save the data into the database
+        recipientCoordinates = geoCoordinateRepository.save(recipientCoordinates);
+        senderCoordinates = geoCoordinateRepository.save(senderCoordinates);
+        newParcel.getRecipient().setCoordinateId(recipientCoordinates.getId());
+        newParcel.getSender().setCoordinateId(senderCoordinates.getId());
         recipientRepo.save(newParcel.getRecipient());
         recipientRepo.save(newParcel.getSender());
-        recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
-        senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
-        geoCoordinateRepository.save(recipientCoordinates);
-        geoCoordinateRepository.save(senderCoordinates);
+        //recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
+        //senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
+
 
         parcelRepo.save(newParcel);
     }

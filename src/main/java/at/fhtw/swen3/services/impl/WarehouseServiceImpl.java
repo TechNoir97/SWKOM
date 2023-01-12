@@ -34,6 +34,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     public void importWarehouses(WarehouseEntity warehouse) throws BLException {
         log.info("Import Warehouse: " + warehouse);
 
+        //Delete the previous DB entries
+        deleteDBEntries();
         //validator.validate(warehouse);
         try {
 
@@ -81,14 +83,15 @@ public class WarehouseServiceImpl implements WarehouseService {
     private HopEntity checkHopType(HopEntity toCheck) throws BLException {
         log.info("checkHopType: " + toCheck);
         HopEntity hop = null;
-
+        //TODO Die Transferwarehouses werden noch nicht gespeichert
 
         try {
             if (toCheck.getHopType().equals("warehouse")) {
                 WarehouseEntity warehouse = (WarehouseEntity) toCheck;
                 validator.validate(warehouse);
-                if(!warehouse.getNextHops().isEmpty()){
-                    checkHopType(warehouse.getNextHops().get(0).getHop());
+                while (!warehouse.getNextHops().isEmpty()){
+                    hop = checkHopType(warehouse.getNextHops().get(0).getHop());
+                    warehouse.getNextHops().remove(0);
                 }
                 GeoCoordinateEntity geoCoordinate = geoCoordinateRepository.save(toCheck.getLocationCoordinates());
                 toCheck.getLocationCoordinates().setId(geoCoordinate.getId());
@@ -117,7 +120,14 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
 
-
+    private void deleteDBEntries(){
+        warehouseNextHopsRepository.deleteAll();
+        warehouseRepository.deleteAll();
+        hopRepository.deleteAll();
+        truckRepository.deleteAll();
+        transferwarehouseRepository.deleteAll();
+        geoCoordinateRepository.deleteAll();
+    }
 
 
 }
