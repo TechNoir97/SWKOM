@@ -2,7 +2,9 @@ package at.fhtw.swen3.services.impl;
 
 import at.fhtw.swen3.gps.service.impl.BingEncodingProxy;
 import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
+import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.persistence.entities.RecipientEntity;
 import at.fhtw.swen3.persistence.repositories.GeoCoordinateRepository;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
@@ -39,7 +41,7 @@ public class ParcelServiceImpl implements ParcelService {
         validator.validate(newParcel);
         String id = RandomStringUtils.randomAlphanumeric(9);
         id = id.toUpperCase();
-        System.out.println("ABABABABABABABABABABABABAB" + id + "ABABABABABABABABABABABABAB");
+        System.out.println("//////////////////////////ParcelID--" + id + "--////////////////////////");
         newParcel.setTrackingId(id);
         //Get the coordinates
         BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
@@ -48,12 +50,22 @@ public class ParcelServiceImpl implements ParcelService {
         GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
 
         //Save the data into the database
-        recipientRepo.save(newParcel.getRecipient());
-        recipientRepo.save(newParcel.getSender());
-        recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
-        senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
-        geoCoordinateRepository.save(recipientCoordinates);
-        geoCoordinateRepository.save(senderCoordinates);
+        RecipientEntity checkIfRecipExists = recipientRepo.findByName(newParcel.getRecipient().getName());
+        RecipientEntity checkIfSendExists = recipientRepo.findByName(newParcel.getSender().getName());
+        if(checkIfRecipExists == null){
+            recipientRepo.save(newParcel.getRecipient());
+            recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
+            geoCoordinateRepository.save(recipientCoordinates);
+        }else{
+            newParcel.setRecipient(recipientRepo.findByName(checkIfRecipExists.getName()));
+        }
+        if(checkIfSendExists == null){
+            recipientRepo.save(newParcel.getSender());
+            senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
+            geoCoordinateRepository.save(senderCoordinates);
+        }else{
+            newParcel.setSender(recipientRepo.findByName(checkIfSendExists.getName()));
+        }
 
         parcelRepo.save(newParcel);
         NewParcelInfo newParcelInfo = new NewParcelInfo();
@@ -99,16 +111,16 @@ public class ParcelServiceImpl implements ParcelService {
     }
     @Override
     public void reportParcelHop(String trackingId, String code){
-        /* TODO hier müssen wir noch schauen wie wir das machen sollen
+         //TODO hier müssen wir noch schauen wie wir das machen sollen
         try{
         ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
         List<HopArrivalEntity> visitedHops = parcel.getVisitedHops();
-        List<HopArrivalEntity> futurreHops = parcel.getFutureHops();
+        List<HopArrivalEntity> futureHops = parcel.getFutureHops();
         }catch (Exception e){
-        System.out.printl("Could not report Hop - ParcelServiceImpl");
-        log.error("Could not report Hop - ParcelServiceImpl",e);
+            System.out.println("Could not report Hop - ParcelServiceImpl");
+            log.error("Could not report Hop - ParcelServiceImpl",e);
         }
-        */
+
     }
 
     @Override
@@ -150,6 +162,7 @@ public class ParcelServiceImpl implements ParcelService {
         parcelRepo.save(transParcel);
         NewParcelInfo parcelInfo = new NewParcelInfo();
         parcelInfo.setTrackingId(transParcel.getTrackingId());
+
 
         return parcelInfo;
     }
