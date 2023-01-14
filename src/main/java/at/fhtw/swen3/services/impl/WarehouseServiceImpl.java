@@ -11,9 +11,11 @@ import at.fhtw.swen3.services.mapper.WarehouseMapper;
 import at.fhtw.swen3.services.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +39,38 @@ public class WarehouseServiceImpl implements WarehouseService {
         //Delete the previous DB entries
         deleteDBEntries();
         //validator.validate(warehouse);
+        List<WarehouseNextHopsEntity> nextHopsSaved = new ArrayList<WarehouseNextHopsEntity>();
         try {
-
+            /*
             for(WarehouseNextHopsEntity nextHops : warehouse.getNextHops()){
                 HopEntity hop = checkHopType(nextHops.getHop());
-
-            }
+                warehouseNextHopsRepository.save(nextHops);
+                nextHops.setParentHop(warehouse);
+                nextHopsSaved.add(nextHops);
+            }*/
+            nextHopsSaved = checkHopType(warehouse.getNextHops().get(0).getHop());
+            warehouse.setNextHops(nextHopsSaved);
             warehouseRepository.save(warehouse);
 
+/*s
+        s
+        s
+                s
+                s
+                        s
+                        s
+                                s
+                                s
+                                        s
 
+                                        getClass()s
+                s
+                    s
+
+                            s
+                            nextHopsSaveds
+
+                                    s*/
         }catch (Exception e){
             throw new BLException(2L, "Failed to store warehouse", e);
         }
@@ -80,34 +105,58 @@ public class WarehouseServiceImpl implements WarehouseService {
             }
         return null;
         }
-    private HopEntity checkHopType(HopEntity toCheck) throws BLException {
+    private List<WarehouseNextHopsEntity> checkHopType(HopEntity toCheck) throws BLException {
         log.info("checkHopType: " + toCheck);
-        HopEntity hop = null;
-        //TODO Die Transferwarehouses werden noch nicht gespeichert
 
+
+        List<WarehouseNextHopsEntity> nextHopsSaved = new ArrayList<WarehouseNextHopsEntity>();
+
+        GeoCoordinateEntity geoCoordinate = geoCoordinateRepository.save(toCheck.getLocationCoordinates());
+        toCheck.getLocationCoordinates().setId(geoCoordinate.getId());
         try {
             if (toCheck.getHopType().equals("warehouse")) {
                 WarehouseEntity warehouse = (WarehouseEntity) toCheck;
                 validator.validate(warehouse);
-                while (!warehouse.getNextHops().isEmpty()){
-                    hop = checkHopType(warehouse.getNextHops().get(0).getHop());
-                    warehouse.getNextHops().remove(0);
+                if (!warehouse.getNextHops().isEmpty()){
+                    for(int i = 0; i < warehouse.getNextHops().size(); i++) {
+                        nextHopsSaved = checkHopType(warehouse.getNextHops().get(i).getHop());
+                    }
                 }
-                GeoCoordinateEntity geoCoordinate = geoCoordinateRepository.save(toCheck.getLocationCoordinates());
-                toCheck.getLocationCoordinates().setId(geoCoordinate.getId());
-                hop = warehouseRepository.save(warehouse);
+
+                    WarehouseNextHopsEntity nextHop = warehouse.getNextHops().get(0);
+                    if(warehouseRepository.findByLevel(warehouse.getLevel()) != null){
+                        nextHop.setParentHop(warehouseRepository.findByLevel(warehouse.getLevel()));
+                    }else{
+                        nextHop.setParentHop(warehouseRepository.save(warehouse));
+                    }
+
+                    GeoCoordinateEntity nextHopCoordinates = geoCoordinateRepository.save(nextHop.getHop().getLocationCoordinates());
+                    nextHop.getHop().getLocationCoordinates().setId(nextHopCoordinates.getId());
+                    GeoCoordinateEntity parentHopCoordinates = geoCoordinateRepository.save(warehouse.getLocationCoordinates());
+                    nextHop.getParentHop().getLocationCoordinates().setId(parentHopCoordinates.getId());
+                    nextHop.setHop(hopRepository.findByCode(nextHop.getHop().getCode()));
+                    nextHop.setParentHop(hopRepository.findByCode(nextHop.getParentHop().getCode()));
+                    warehouseNextHopsRepository.save(nextHop);
+                    nextHopsSaved.add(nextHop);
+
+                    warehouse.getNextHops().remove(0);
+
+                warehouseRepository.save(warehouse);
             } else if (toCheck.getHopType().equals("truck")) {
                 TruckEntity truck = (TruckEntity) toCheck;
                 validator.validate(truck);
-                GeoCoordinateEntity geoCoordinate = geoCoordinateRepository.save(toCheck.getLocationCoordinates());
-                toCheck.getLocationCoordinates().setId(geoCoordinate.getId());
-                hop = truckRepository.save(truck);
+                TruckEntity checkIfExists = truckRepository.findByNumberPlate(truck.getNumberPlate());
+                if(checkIfExists == null) {
+                    truckRepository.save(truck);
+                }
             } else if (toCheck.getHopType().equals("transferwarehouse")) {
                 TransferwarehouseEntity transferwarehouse = (TransferwarehouseEntity) toCheck;
                 validator.validate(transferwarehouse);
-                GeoCoordinateEntity geoCoordinate = geoCoordinateRepository.save(toCheck.getLocationCoordinates());
-                toCheck.getLocationCoordinates().setId(geoCoordinate.getId());
-                hop = transferwarehouseRepository.save(transferwarehouse);
+                TransferwarehouseEntity checkIfExists = transferwarehouseRepository.findByLogisticsPartner(transferwarehouse.getLogisticsPartner());
+                if(checkIfExists == null) {
+                    transferwarehouseRepository.save(transferwarehouse);
+                }
+
 
             } else {
                 System.out.println("Der angegebene Hop-Type existiert nicht");
@@ -116,17 +165,21 @@ public class WarehouseServiceImpl implements WarehouseService {
             log.error("Could not save Hop",e);
         }
 
-        return hop;
+        return nextHopsSaved;
     }
 
 
     private void deleteDBEntries(){
-        warehouseNextHopsRepository.deleteAll();
-        warehouseRepository.deleteAll();
-        hopRepository.deleteAll();
-        truckRepository.deleteAll();
-        transferwarehouseRepository.deleteAll();
-        geoCoordinateRepository.deleteAll();
+        try {
+            truckRepository.deleteAll();
+            warehouseNextHopsRepository.deleteAll();
+            hopRepository.deleteAll();
+            geoCoordinateRepository.deleteAll();
+            transferwarehouseRepository.deleteAll();
+            warehouseRepository.deleteAll();
+        }catch (Exception e){
+            log.error("Could not delete the DB",e);
+        }
     }
 
 

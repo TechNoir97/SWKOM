@@ -86,10 +86,10 @@ public class ParcelEntity {
     //@NotNull
     private StateEnum state = StateEnum.PICKUP;
 
-    @OneToMany
+    @OneToMany(mappedBy = "parcel",fetch =  FetchType.EAGER,  cascade=CascadeType.PERSIST)
     //@NotNull
     private List<HopArrivalEntity> visitedHops = new ArrayList<HopArrivalEntity>();
-    @OneToMany
+    @OneToMany(mappedBy = "parcel",fetch =  FetchType.LAZY,  cascade=CascadeType.PERSIST)
     //@NotNull
     private List<HopArrivalEntity> futureHops = new ArrayList<HopArrivalEntity>();
 

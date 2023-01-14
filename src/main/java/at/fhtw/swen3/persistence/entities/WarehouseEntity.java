@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Warehouse")
+@DiscriminatorValue("warehouse")
 @Table(name = "warehouse")
 public class WarehouseEntity extends HopEntity {
     @Id
@@ -15,7 +16,7 @@ public class WarehouseEntity extends HopEntity {
     private Integer level = null;
 
     @NotNull
-    @OneToMany
+    @OneToMany(mappedBy = "parentHop", targetEntity = WarehouseNextHopsEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<WarehouseNextHopsEntity> nextHops = new ArrayList<WarehouseNextHopsEntity>();
 
     public Integer getLevel() {

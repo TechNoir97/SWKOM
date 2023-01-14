@@ -9,6 +9,7 @@ public class TransferwarehouseEntity extends HopEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private int id;
+    @Column(columnDefinition = "text")
     private String regionGeoJson;
     private String logisticsPartner;
     private String logisticsPartnerUrl;
