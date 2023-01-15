@@ -1,9 +1,11 @@
 package at.fhtw.swen3.controller.rest;
 
 import at.fhtw.swen3.controller.WarehouseApi;
+import at.fhtw.swen3.persistence.entities.WarehouseEntity;
 import at.fhtw.swen3.services.WarehouseService;
 import at.fhtw.swen3.services.dto.Hop;
 import at.fhtw.swen3.services.dto.Warehouse;
+import at.fhtw.swen3.services.mapper.WarehouseMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -75,6 +77,10 @@ public class WarehouseApiController implements WarehouseApi {
     public ResponseEntity<Void> importWarehouses(@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Warehouse warehouse) {
         try{
             log.info("WarehouseApiController: importWarehouse()");
+            WarehouseEntity warehouseEntity = WarehouseMapper.INSTANCE.dtoToEntity(warehouse);
+            warehouseService.importWarehouses(warehouseEntity);
+
+
             String accept = request.getHeader("Accept");
             return new ResponseEntity<Void>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
         }catch (Exception e){

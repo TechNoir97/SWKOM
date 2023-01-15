@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity(name = "GeoCoordinate")
 public class GeoCoordinateEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private int id;
     private Double lat;

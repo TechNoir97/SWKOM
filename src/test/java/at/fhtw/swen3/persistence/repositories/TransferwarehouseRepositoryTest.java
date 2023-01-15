@@ -10,8 +10,8 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
 class TransferwarehouseRepositoryTest {
-    @Test
+    /*@Test
     public void saveTransferwarehouseEntityTrue(){
 
-    }
+    }*/
 }
