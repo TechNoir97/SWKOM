@@ -51,7 +51,7 @@ public class ParcelApiController implements ParcelApi {
         try{
             log.info("ParcelApiController: reportParcelDelivery()");
             String accept = request.getHeader("Accept");
-            reportParcelDelivery(trackingId);
+            parcelService.reportParcelDelivery(trackingId);
             return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
         }catch (Exception e){
             System.out.println("Can't report delivery - ParcelApiController");
@@ -65,7 +65,7 @@ public class ParcelApiController implements ParcelApi {
         try{
             log.info("ParcelApiController: reportParcelHop()");
             String accept = request.getHeader("Accept");
-            reportParcelHop(trackingId,code);
+            parcelService.reportParcelHop(trackingId,code);
             return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
         }catch (Exception e){
             System.out.println("Can't report parcel hop");

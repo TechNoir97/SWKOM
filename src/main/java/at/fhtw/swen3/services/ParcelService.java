@@ -15,7 +15,7 @@ public interface ParcelService {
     public List<Parcel> getParcels();
     public void deleteParcelById(int id);
     public void updateParcelInfo(int id, ParcelEntity parcelEntity) throws BLException;
-    public void reportParcelDelivery(String trackingId);
+    public void reportParcelDelivery(String trackingId) throws BLException;
     public void reportParcelHop(String trackingId, String code);
     public TrackingInformation trackParcel(String trackingId);
     public NewParcelInfo transitionParcel(String trackingId, Parcel parcel) throws BLException;

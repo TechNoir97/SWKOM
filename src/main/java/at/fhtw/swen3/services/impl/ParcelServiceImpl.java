@@ -83,6 +83,11 @@ public class ParcelServiceImpl implements ParcelService {
 
         newParcel.setState(ParcelEntity.StateEnum.PICKUP);
         parcelRepo.save(newParcel);
+
+        for(HopArrivalEntity entity : futureHops){
+            entity.setParcel(newParcel);
+            hopArrivalRepository.save(entity);
+        }
         NewParcelInfo newParcelInfo = new NewParcelInfo();
         newParcelInfo.setTrackingId(newParcel.getTrackingId());
         return newParcelInfo;
@@ -118,10 +123,12 @@ public class ParcelServiceImpl implements ParcelService {
         recipientRepo.save(parcelEntity.getSender());
     }
     @Override
-    public void reportParcelDelivery(String trackingId){
+    public void reportParcelDelivery(String trackingId) throws BLException {
 
         ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
+        validator.validate(parcel);
         parcel.setState(ParcelEntity.StateEnum.DELIVERED);
+        log.info("Parcel" + parcel + "was deliverd.");
         parcelRepo.save(parcel);
     }
     @Override
@@ -132,14 +139,27 @@ public class ParcelServiceImpl implements ParcelService {
         List<HopArrivalEntity> visitedHops = parcel.getVisitedHops();
         List<HopArrivalEntity> futureHops = parcel.getFutureHops();
 
-        for( HopArrivalEntity futureHop: futureHops){
+        for(HopArrivalEntity futureHop: futureHops){
             if(futureHop.getCode() == code){
                 visitedHops.add(futureHop);
                 futureHops.remove(futureHop);
+               if(futureHop.getDescription().contains("Truck")){
+                   parcel.setState(ParcelEntity.StateEnum.INTRUCKDELIVERY);
+               }else{
+                   if(futureHop.getDescription().contains("Warehouse")){
+                       parcel.setState(ParcelEntity.StateEnum.INTRANSPORT);
+                   }
+                   else {
+                       parcel.setState(ParcelEntity.StateEnum.TRANSFERRED);
+                   }
+               }
             }
         }
         parcel.setFutureHops(futureHops);
         parcel.setVisitedHops(visitedHops);
+        log.info("FutureHops: " + futureHops);
+        log.info("VisitedHops: " + visitedHops);
+        parcelRepo.save(parcel);
         }catch (Exception e){
             System.out.println("Could not report Hop - ParcelServiceImpl");
             log.error("Could not report Hop - ParcelServiceImpl",e);
