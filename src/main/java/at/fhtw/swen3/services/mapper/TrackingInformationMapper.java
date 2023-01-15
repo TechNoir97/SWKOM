@@ -5,6 +5,7 @@ import at.fhtw.swen3.services.dto.TrackingInformation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
 @Mapper
 public interface TrackingInformationMapper {
     TrackingInformationMapper INSTANCE = Mappers.getMapper(TrackingInformationMapper.class);

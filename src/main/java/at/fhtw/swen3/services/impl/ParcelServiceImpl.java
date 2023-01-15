@@ -4,6 +4,7 @@ import at.fhtw.swen3.gps.service.impl.BingEncodingProxy;
 import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
 import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
+import at.fhtw.swen3.persistence.entities.RecipientEntity;
 import at.fhtw.swen3.persistence.repositories.GeoCoordinateRepository;
 import at.fhtw.swen3.persistence.repositories.ParcelRepository;
 import at.fhtw.swen3.persistence.repositories.RecipientRepository;
@@ -18,14 +19,11 @@ import at.fhtw.swen3.services.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -37,28 +35,41 @@ public class ParcelServiceImpl implements ParcelService {
     private final Validator validator;
 
     @Override
-    public void submitNewParcel(ParcelEntity newParcel) throws BLException {
+    public NewParcelInfo submitNewParcel(ParcelEntity newParcel) throws BLException {
         log.info("ParcelServiceImpl: submitNewParcel() -> Name of the sender: " + newParcel.getSender().getName());
         //Validate the data of the new parcel
         validator.validate(newParcel);
-
+        String id = RandomStringUtils.randomAlphanumeric(9);
+        id = id.toUpperCase();
+        System.out.println("//////////////////////////ParcelID--" + id + "--////////////////////////");
+        newParcel.setTrackingId(id);
         //Get the coordinates
         BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
         GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
         GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
 
         //Save the data into the database
-        recipientCoordinates = geoCoordinateRepository.save(recipientCoordinates);
-        senderCoordinates = geoCoordinateRepository.save(senderCoordinates);
-        newParcel.getRecipient().setCoordinateId(recipientCoordinates.getId());
-        newParcel.getSender().setCoordinateId(senderCoordinates.getId());
-        recipientRepo.save(newParcel.getRecipient());
-        recipientRepo.save(newParcel.getSender());
-        //recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
-        //senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
 
-
+        RecipientEntity checkIfRecipExists = recipientRepo.findByName(newParcel.getRecipient().getName());
+        RecipientEntity checkIfSendExists = recipientRepo.findByName(newParcel.getSender().getName());
+        if(checkIfRecipExists == null){
+            recipientRepo.save(newParcel.getRecipient());
+            recipientCoordinates.setId(recipientRepo.findByName(newParcel.getRecipient().getName()).getId());
+            geoCoordinateRepository.save(recipientCoordinates);
+        }else{
+            newParcel.setRecipient(recipientRepo.findByName(checkIfRecipExists.getName()));
+        }
+        if(checkIfSendExists == null){
+            recipientRepo.save(newParcel.getSender());
+            senderCoordinates.setId(recipientRepo.findByName(newParcel.getSender().getName()).getId());
+            geoCoordinateRepository.save(senderCoordinates);
+        }else{
+            newParcel.setSender(recipientRepo.findByName(checkIfSendExists.getName()));
+        }
         parcelRepo.save(newParcel);
+        NewParcelInfo newParcelInfo = new NewParcelInfo();
+        newParcelInfo.setTrackingId(newParcel.getTrackingId());
+        return newParcelInfo;
     }
     @Override
     public List<Parcel> getParcels(){
@@ -99,22 +110,25 @@ public class ParcelServiceImpl implements ParcelService {
     }
     @Override
     public void reportParcelHop(String trackingId, String code){
-        /* TODO hier müssen wir noch schauen wie wir das machen sollen
+         //TODO hier müssen wir noch schauen wie wir das machen sollen
         try{
         ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
         List<HopArrivalEntity> visitedHops = parcel.getVisitedHops();
-        List<HopArrivalEntity> futurreHops = parcel.getFutureHops();
+        List<HopArrivalEntity> futureHops = parcel.getFutureHops();
         }catch (Exception e){
-        System.out.printl("Could not report Hop - ParcelServiceImpl");
-        log.error("Could not report Hop - ParcelServiceImpl",e);
+            System.out.println("Could not report Hop - ParcelServiceImpl");
+            log.error("Could not report Hop - ParcelServiceImpl",e);
         }
-        */
+
     }
+
     @Override
     public TrackingInformation trackParcel(String trackingId){
         try{
             ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
-            TrackingInformation information = TrackingInformationMapper.INSTANCE.entityToDto(parcel);
+            TrackingInformation information = new TrackingInformation();
+            information = TrackingInformationMapper.INSTANCE.entityToDto(parcel);
+            System.out.println(information);
             return information;
         }catch (Exception e){
             System.out.println("Could not track parcel - ParcelServiceImpl");
@@ -124,9 +138,32 @@ public class ParcelServiceImpl implements ParcelService {
 
     }
     @Override
-    public NewParcelInfo transitionParcel(String trackingId, Parcel parcel){
-        //TODO noch keine Ahnung was diese Funktion genau machen soll
-        return null;
+    public NewParcelInfo transitionParcel(String trackingId, Parcel parcel) throws BLException {
+        validator.validate(parcel);
+
+        ParcelEntity transParcel = new ParcelEntity();
+        transParcel = ParcelMapper.INSTANCE.dtoToEntity(parcel);
+        //Get the coordinates
+        BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
+        GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(transParcel.getRecipient());
+        GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(transParcel.getSender());
+        transParcel.setTrackingId(trackingId);
+
+        //Save the data into the database
+        recipientRepo.save(transParcel.getRecipient());
+        recipientRepo.save(transParcel.getSender());
+
+        recipientCoordinates.setId(recipientRepo.findByName(parcel.getRecipient().getName()).getId());
+        senderCoordinates.setId(recipientRepo.findByName(parcel.getSender().getName()).getId());
+        geoCoordinateRepository.save(recipientCoordinates);
+        geoCoordinateRepository.save(senderCoordinates);
+
+        parcelRepo.save(transParcel);
+        NewParcelInfo parcelInfo = new NewParcelInfo();
+        parcelInfo.setTrackingId(transParcel.getTrackingId());
+
+
+        return parcelInfo;
     }
 
 

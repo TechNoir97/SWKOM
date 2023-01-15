@@ -14,11 +14,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -82,16 +84,17 @@ public class ParcelApiController implements ParcelApi {
             try {
                 ParcelEntity parcelEntity = ParcelMapper.INSTANCE.dtoToEntity(parcel);
                 log.info("ParcelApiController: submitParcel() -> ParcelEntity Recipient: " + parcelEntity.getRecipient().getName());
-                parcelService.submitNewParcel(parcelEntity);
-                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.CREATED);//TODO muss aber noch implementiert werden
+
+
+                NewParcelInfo newParcelInfo = parcelService.submitNewParcel(parcelEntity);
+                return new ResponseEntity<NewParcelInfo>(newParcelInfo, HttpStatus.CREATED);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<NewParcelInfo>(HttpStatus.CREATED);
-                //TODO muss aber noch implementiert werden
+                return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_REQUEST);
             }
         }
 
-        return new ResponseEntity<NewParcelInfo>(HttpStatus.CREATED);//TODO muss aber noch implementiert werden
+        return new ResponseEntity<NewParcelInfo>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<TrackingInformation> trackParcel(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId) {
@@ -99,16 +102,16 @@ public class ParcelApiController implements ParcelApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<TrackingInformation>(objectMapper.readValue("{\n  \"visitedHops\" : [ {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  }, {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  } ],\n  \"futureHops\" : [ null, null ],\n  \"state\" : \"Pickup\"\n}", TrackingInformation.class), HttpStatus.OK);
-                //TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+                TrackingInformation newTrackinginformation = parcelService.trackParcel(trackingId);
+                return new ResponseEntity<TrackingInformation>(newTrackinginformation, HttpStatus.OK);
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<TrackingInformation>(HttpStatus.OK);
-                //TODO muss aber noch implementiert werden ;
+                return new ResponseEntity<TrackingInformation>(HttpStatus.BAD_REQUEST);
+
             }
         }
 
-        return new ResponseEntity<TrackingInformation>(HttpStatus.OK); //TODO muss aber noch implementiert werden
+        return new ResponseEntity<TrackingInformation>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<NewParcelInfo> transitionParcel(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel body) {
@@ -116,15 +119,16 @@ public class ParcelApiController implements ParcelApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ6\"\n}", NewParcelInfo.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+                parcelService.transitionParcel(trackingId, body);
+                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ8\"\n}", NewParcelInfo.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<NewParcelInfo>(HttpStatus.OK);
-                //TODO muss aber noch implementiert werden
+                return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_GATEWAY);
+
             }
         }
 
-        return new ResponseEntity<NewParcelInfo>(HttpStatus.OK);//TODO muss aber noch implementiert werden
+        return new ResponseEntity<NewParcelInfo>(HttpStatus.CONFLICT);
     }
 
 }
