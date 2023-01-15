@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface WarehouseService {
     public void importWarehouses(WarehouseEntity warehouse) throws BLException;
-    public Hop exportWarehouses(String hop);
-    public List<Warehouse> getWarehouse();
+    public Hop getWarehouse(String hop);
+    public List<Hop> exportWarehouses();
 
 }

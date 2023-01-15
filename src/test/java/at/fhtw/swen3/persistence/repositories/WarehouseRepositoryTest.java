@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
 class WarehouseRepositoryTest {
-    @Test
+   /* @Test
     public void saveWarehouseEntityTrue(){
 
-    }
+    }*/
 }

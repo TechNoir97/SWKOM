@@ -1,7 +1,7 @@
 package at.fhtw.swen3.persistence.entities;
 
 import org.springframework.lang.Nullable;
-
+import org.springframework.data.geo.Point;
 import javax.persistence.*;
 
 @Table(name = "geocoordinate")
@@ -13,6 +13,9 @@ public class GeoCoordinateEntity {
     private int id;
     private Double lat;
     private Double lon;
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Point coordinates;
 
     public Double getLat() {
         return lat;
@@ -28,5 +31,21 @@ public class GeoCoordinateEntity {
 
     public void setLon(Double lon) {
         this.lon = lon;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCoordinates() {
+        this.coordinates = new Point(lat, lon);
+    }
+
+    public Point getCoordinates() {
+        return coordinates;
     }
 }

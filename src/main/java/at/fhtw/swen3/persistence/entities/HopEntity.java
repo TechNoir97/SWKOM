@@ -5,6 +5,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity(name = "Hop")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorValue("hop")
 @Table(name = "hop")
 public class HopEntity {
     @Id
@@ -17,7 +19,7 @@ public class HopEntity {
     private String description;
     private Integer processingDelayMins;
     private String locationName;
-    @OneToOne
+    @OneToOne(cascade= CascadeType.ALL)
     @NotNull
     private GeoCoordinateEntity locationCoordinates;
 

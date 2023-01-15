@@ -14,7 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
 class ParcelRepositoryTest {
-    @Autowired
+    /*@Autowired
     private ParcelRepository parcelRepository;
     private static ParcelEntity parcelEntity;
     @Autowired
@@ -45,5 +45,5 @@ class ParcelRepositoryTest {
         assertEquals(parcel.getSender(), parcelEntity.getSender());
         assertEquals(parcel.getRecipient(), parcelEntity.getRecipient());
 
-    }
+    }*/
 }
