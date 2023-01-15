@@ -11,8 +11,8 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
 class GeoCoordinateRepositoryTest {
-/*
 
+/*
     @Autowired
     private GeoCoordinateRepository geoCoordinateRepository;
     private static GeoCoordinateEntity geoCoordinateEntity;
@@ -38,8 +38,8 @@ class GeoCoordinateRepositoryTest {
         assertNotEquals(geoCoordinate.getLat(), geoCoordinateEntity.getLon());
         assertNotEquals(geoCoordinate.getLon(), geoCoordinateEntity.getLat());
     }
+
+
 */
-
-
 
 }
