@@ -46,10 +46,10 @@ public class ParcelServiceImpl implements ParcelService {
         //Get the coordinates
         BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
         GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
-
         GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
 
         //Save the data into the database
+
         RecipientEntity checkIfRecipExists = recipientRepo.findByName(newParcel.getRecipient().getName());
         RecipientEntity checkIfSendExists = recipientRepo.findByName(newParcel.getSender().getName());
         if(checkIfRecipExists == null){
@@ -66,7 +66,6 @@ public class ParcelServiceImpl implements ParcelService {
         }else{
             newParcel.setSender(recipientRepo.findByName(checkIfSendExists.getName()));
         }
-
         parcelRepo.save(newParcel);
         NewParcelInfo newParcelInfo = new NewParcelInfo();
         newParcelInfo.setTrackingId(newParcel.getTrackingId());

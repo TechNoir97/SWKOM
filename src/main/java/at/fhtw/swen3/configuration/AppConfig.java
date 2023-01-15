@@ -7,6 +7,7 @@ import at.fhtw.swen3.services.impl.WarehouseServiceImpl;
 import at.fhtw.swen3.services.validation.Validator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 public class AppConfig {
@@ -16,7 +17,12 @@ public class AppConfig {
     }
 
     @Bean
-    public WarehouseServiceImpl warehouseService(WarehouseRepository warehouseRepository, HopRepository hopRepository, Validator validator){
-        return new WarehouseServiceImpl(warehouseRepository, hopRepository, validator);
+    public WarehouseServiceImpl warehouseService(TransferwarehouseRepository transferwarehouseRepository, TruckRepository truckRepository, WarehouseRepository warehouseRepository, WarehouseNextHopsRepository warehouseNextHopsRepository, GeoCoordinateRepository geoCoordinateRepository, HopRepository hopRepository, Validator validator){
+        return new WarehouseServiceImpl(transferwarehouseRepository, truckRepository, geoCoordinateRepository, warehouseRepository, warehouseNextHopsRepository, hopRepository, validator);
+    }
+
+    @Bean
+    public InternalResourceViewResolver defaultViewResolver() {
+        return new InternalResourceViewResolver();
     }
 }

@@ -1,5 +1,7 @@
 package at.fhtw.swen3.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -12,8 +14,12 @@ public class WarehouseNextHopsEntity {
     private int id;
     private Integer traveltimeMins;
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
     private HopEntity hop;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "warehouse_entities_id")
+    private HopEntity parentHop;
 
     public HopEntity getHop() {
         return hop;
@@ -37,5 +43,13 @@ public class WarehouseNextHopsEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public HopEntity getParentHop() {
+        return parentHop;
+    }
+
+    public void setParentHop(HopEntity parentHop) {
+        this.parentHop = parentHop;
     }
 }

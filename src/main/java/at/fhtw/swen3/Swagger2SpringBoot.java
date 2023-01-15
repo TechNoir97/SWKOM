@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @SpringBootApplication
 @EnableOpenApi
-@ComponentScan(basePackages = { "at.fhtw.swen3", "at.fhtw.swen3.services" , "at.fhtw.swen3.configuration"})
+@EnableWebMvc
+@ComponentScan(basePackages = {"at.fhtw.swen3", "at.fhtw.swen3.services" , "at.fhtw.swen3.configuration", "at.fhtw.swen3.controller", "at.fhtw.swen3.persistence"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override

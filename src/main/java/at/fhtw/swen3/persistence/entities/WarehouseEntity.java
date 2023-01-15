@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Warehouse")
+@DiscriminatorValue("warehouse")
 @Table(name = "warehouse")
-public class WarehouseEntity {
+public class WarehouseEntity extends HopEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -15,7 +16,7 @@ public class WarehouseEntity {
     private Integer level = null;
 
     @NotNull
-    @OneToMany
+    @OneToMany(mappedBy = "parentHop", targetEntity = WarehouseNextHopsEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<WarehouseNextHopsEntity> nextHops = new ArrayList<WarehouseNextHopsEntity>();
 
     public Integer getLevel() {
