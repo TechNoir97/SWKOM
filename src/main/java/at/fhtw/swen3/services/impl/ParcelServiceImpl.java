@@ -110,11 +110,20 @@ public class ParcelServiceImpl implements ParcelService {
     }
     @Override
     public void reportParcelHop(String trackingId, String code){
-         //TODO hier müssen wir noch schauen wie wir das machen sollen
+
         try{
         ParcelEntity parcel = parcelRepo.findByTrackingId(trackingId);
         List<HopArrivalEntity> visitedHops = parcel.getVisitedHops();
         List<HopArrivalEntity> futureHops = parcel.getFutureHops();
+
+        for( HopArrivalEntity futureHop: futureHops){
+            if(futureHop.getCode() == code){
+                visitedHops.add(futureHop);
+                futureHops.remove(futureHop);
+            }
+        }
+        parcel.setFutureHops(futureHops);
+        parcel.setVisitedHops(visitedHops);
         }catch (Exception e){
             System.out.println("Could not report Hop - ParcelServiceImpl");
             log.error("Could not report Hop - ParcelServiceImpl",e);

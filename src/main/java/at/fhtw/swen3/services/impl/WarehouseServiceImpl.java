@@ -52,25 +52,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             warehouse.setNextHops(nextHopsSaved);
             warehouseRepository.save(warehouse);
 
-/*s
-        s
-        s
-                s
-                s
-                        s
-                        s
-                                s
-                                s
-                                        s
 
-                                        getClass()s
-                s
-                    s
-
-                            s
-                            nextHopsSaveds
-
-                                    s*/
         }catch (Exception e){
             throw new BLException(2L, "Failed to store warehouse", e);
         }
