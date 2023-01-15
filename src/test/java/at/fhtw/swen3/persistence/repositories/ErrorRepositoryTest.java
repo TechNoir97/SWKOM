@@ -12,8 +12,8 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
 class ErrorRepositoryTest {
-
-  /*  @Autowired
+/*
+    @Autowired
     private ErrorRepository errorRepository;
     private static ErrorEntity errorEntity;
     @BeforeAll
@@ -35,6 +35,6 @@ class ErrorRepositoryTest {
         ErrorEntity error = errorRepository.save(errorEntity);
         assertNotEquals(error.getId(), -1L);
 
-    }*/
-  
+    }
+  */
 }

@@ -5,8 +5,11 @@ import at.fhtw.swen3.gps.service.config.Configuration;
 import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
 import at.fhtw.swen3.persistence.entities.RecipientEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Address;
 
+import org.apache.tomcat.jni.Address;
+import org.springframework.data.geo.Point;
+import org.springframework.data.geo.Polygon;
+import java.awt.*;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -15,6 +18,8 @@ import java.net.http.HttpResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Properties;
 @Slf4j
 public class BingEncodingProxy implements GeoEncodingService {
@@ -57,5 +62,26 @@ public class BingEncodingProxy implements GeoEncodingService {
         return geoCoordinate;
     }
 
+    //TODO hier muss noch eine Funktion rein um die Region von Trucks und so zu bekommen
+        public Polygon getRegionGeo(String regionGeoJson){
+            ArrayList<Point> points = new ArrayList<>();
 
+            try{
+                JSONObject object1 = new JSONObject(regionGeoJson);
+                JSONObject geometry = (JSONObject) object1.get("geometry");
+                //JSONObject coordinates = (JSONObject) geometry.get("coordinates");
+                String tmp = geometry.get("coordinates").toString();
+                JSONArray coordinatPoints = new JSONArray(tmp.substring(2, tmp.length() - 2));
+                for(int i = 0; i < coordinatPoints.length(); i++){
+                    JSONArray point = new JSONArray(coordinatPoints.get(i).toString());
+                    Double lat = Double.parseDouble(point.get(0).toString());
+                    Double lon = Double.parseDouble(point.get(1).toString());
+                    points.add(new Point(lat, lon));
+                }
+            }catch (Exception e){
+                log.error("An error occured while creating regionGeo", e);
+            }
+            Polygon polygon = new Polygon(points);
+            return polygon;
+        }
 }

@@ -51,6 +51,7 @@ public class ParcelApiController implements ParcelApi {
         try{
             log.info("ParcelApiController: reportParcelDelivery()");
             String accept = request.getHeader("Accept");
+            reportParcelDelivery(trackingId);
             return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
         }catch (Exception e){
             System.out.println("Can't report delivery - ParcelApiController");
@@ -64,6 +65,7 @@ public class ParcelApiController implements ParcelApi {
         try{
             log.info("ParcelApiController: reportParcelHop()");
             String accept = request.getHeader("Accept");
+            reportParcelHop(trackingId,code);
             return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
         }catch (Exception e){
             System.out.println("Can't report parcel hop");
@@ -117,10 +119,11 @@ public class ParcelApiController implements ParcelApi {
     public ResponseEntity<NewParcelInfo> transitionParcel(@Pattern(regexp="^[A-Z0-9]{9}$") @Parameter(in = ParameterIn.PATH, description = "The tracking ID of the parcel. E.g. PYJRB4HZ6 ", required=true, schema=@Schema()) @PathVariable("trackingId") String trackingId,@Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Parcel body) {
         log.info("ParcelApiController: transitionParcel()");
         String accept = request.getHeader("Accept");
+        NewParcelInfo transparselinfo = new NewParcelInfo();
         if (accept != null && accept.contains("application/json")) {
             try {
-                parcelService.transitionParcel(trackingId, body);
-                return new ResponseEntity<NewParcelInfo>(objectMapper.readValue("{\n  \"trackingId\" : \"PYJRB4HZ8\"\n}", NewParcelInfo.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
+                transparselinfo = parcelService.transitionParcel(trackingId, body);
+                return new ResponseEntity<NewParcelInfo>(transparselinfo, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<NewParcelInfo>(HttpStatus.BAD_GATEWAY);

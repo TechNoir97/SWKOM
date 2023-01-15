@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 @RestController
@@ -42,19 +43,20 @@ public class WarehouseApiController implements WarehouseApi {
         this.warehouseService = warehouseService;
     }
 
-    public ResponseEntity<Warehouse> exportWarehouses() {
+    public ResponseEntity<List<Hop>> exportWarehouses() {
         log.info("WarehouseApiController: exportWarehouse()");
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Warehouse>(objectMapper.readValue("\"\"", Warehouse.class), HttpStatus.OK);//TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+                List<Hop> hopList = warehouseService.exportWarehouses();
+                return new ResponseEntity<List<Hop>>(hopList, HttpStatus.OK);//TODO muss aber noch implementiert werden
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Warehouse>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<List<Hop>>(HttpStatus.BAD_REQUEST);
             }
         }
 
-        return new ResponseEntity<Warehouse>(HttpStatus.CONFLICT);
+        return new ResponseEntity<List<Hop>>(HttpStatus.CONFLICT);
     }
 
     public ResponseEntity<Hop> getWarehouse(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("code") String code) {
@@ -62,9 +64,10 @@ public class WarehouseApiController implements WarehouseApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Hop>(objectMapper.readValue("{\n  \"code\" : \"code\",\n  \"locationName\" : \"locationName\",\n  \"processingDelayMins\" : 0,\n  \"hopType\" : \"hopType\",\n  \"description\" : \"description\",\n  \"locationCoordinates\" : {\n    \"lon\" : 1.4658129805029452,\n    \"lat\" : 6.027456183070403\n  }\n}", Hop.class), HttpStatus.OK);
+                Hop hop = warehouseService.getWarehouse(code);
+                return new ResponseEntity<Hop>(hop, HttpStatus.OK);
                 //TODO muss aber noch implementiert werden
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Hop>(HttpStatus.BAD_GATEWAY);
 
