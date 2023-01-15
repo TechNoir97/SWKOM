@@ -82,8 +82,7 @@ public class ParcelEntity {
             return null;
         }
     }
-    //TODO Die @NotNull müssen wieder auskommentiert werden
-    //@NotNull
+    @NotNull
     private StateEnum state = StateEnum.PICKUP;
 
     @OneToMany(mappedBy = "parcel",fetch =  FetchType.EAGER,  cascade=CascadeType.PERSIST)

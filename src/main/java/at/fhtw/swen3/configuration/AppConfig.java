@@ -12,8 +12,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 public class AppConfig {
     @Bean
-    public ParcelServiceImpl parcelService(ParcelRepository parcelRepository, RecipientRepository recipientRepository, GeoCoordinateRepository geoCoordinateRepository, Validator validator){
-        return new ParcelServiceImpl(parcelRepository, recipientRepository, geoCoordinateRepository, validator);
+    public ParcelServiceImpl parcelService(WarehouseRepository warehouseRepository, ParcelRepository parcelRepository, RecipientRepository recipientRepository, GeoCoordinateRepository geoCoordinateRepository, Validator validator, HopRepository hopRepository, HopArrivalRepository hopArrivalRepository){
+        return new ParcelServiceImpl(warehouseRepository, parcelRepository, recipientRepository, geoCoordinateRepository, validator, hopRepository, hopArrivalRepository);
     }
 
     @Bean

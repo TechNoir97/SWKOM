@@ -1,5 +1,6 @@
 package at.fhtw.swen3.services.impl;
 
+import at.fhtw.swen3.gps.service.impl.BingEncodingProxy;
 import at.fhtw.swen3.persistence.entities.*;
 import at.fhtw.swen3.persistence.repositories.*;
 import at.fhtw.swen3.services.BLException;
@@ -48,8 +49,10 @@ public class WarehouseServiceImpl implements WarehouseService {
                 nextHops.setParentHop(warehouse);
                 nextHopsSaved.add(nextHops);
             }*/
-            nextHopsSaved = checkHopType(warehouse.getNextHops().get(0).getHop());
-            warehouse.setNextHops(nextHopsSaved);
+            nextHopsSaved = checkHopType(warehouse.getNextHops().get(0).getHop(), warehouse);
+           // warehouse.getNextHops().get(0).setParentHop(warehouseRepository.save(warehouse));
+            warehouse.getNextHops().get(0).setParentHop(warehouse);
+            warehouseNextHopsRepository.save(warehouse.getNextHops().get(0));
             warehouseRepository.save(warehouse);
 
 
@@ -58,7 +61,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         }
     }
     @Override
-    public Hop exportWarehouses(String code){
+    public Hop getWarehouse(String code){
         try {
             Hop hop = HopMapper.INSTANCE.entityToDto(hopRepository.findByCode(code));
             log.info("Export Warehouse: ");
@@ -71,15 +74,15 @@ public class WarehouseServiceImpl implements WarehouseService {
         return null;
     }
     @Override
-    public List<Warehouse> getWarehouse(){
-        List<WarehouseEntity> warehouseEntities = warehouseRepository.findAll();
-        List<Warehouse> warehouses = new ArrayList<>();
+    public List<Hop> exportWarehouses(){
+        List<HopEntity> hopEntities = hopRepository.findAll();
+        List<Hop> hops = new ArrayList<>();
         try {
-            for (WarehouseEntity entity : warehouseEntities) {
-                warehouses.add(WarehouseMapper.INSTANCE.entityToDto(entity));
-                log.info("Get List of Warehouses");
-                return warehouses;
+            for (HopEntity entity : hopEntities) {
+                hops.add(HopMapper.INSTANCE.entityToDto(entity));
             }
+            log.info("Get List of Warehouses");
+            return hops;
         }catch(Exception e){
             System.out.println("Could not get Warehouse");
             log.error("Could not get Warehouse",e);
@@ -87,12 +90,12 @@ public class WarehouseServiceImpl implements WarehouseService {
             }
         return null;
         }
-    private List<WarehouseNextHopsEntity> checkHopType(HopEntity toCheck) throws BLException {
+    private List<WarehouseNextHopsEntity> checkHopType(HopEntity toCheck, WarehouseEntity root) throws BLException {
         log.info("checkHopType: " + toCheck);
 
 
         List<WarehouseNextHopsEntity> nextHopsSaved = new ArrayList<WarehouseNextHopsEntity>();
-
+        BingEncodingProxy bingEncodingProxy = new BingEncodingProxy();
         GeoCoordinateEntity geoCoordinate = geoCoordinateRepository.save(toCheck.getLocationCoordinates());
         toCheck.getLocationCoordinates().setId(geoCoordinate.getId());
         try {
@@ -101,7 +104,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                 validator.validate(warehouse);
                 if (!warehouse.getNextHops().isEmpty()){
                     for(int i = 0; i < warehouse.getNextHops().size(); i++) {
-                        nextHopsSaved = checkHopType(warehouse.getNextHops().get(i).getHop());
+                        nextHopsSaved = checkHopType(warehouse.getNextHops().get(i).getHop(), root);
                     }
                 }
 
@@ -111,7 +114,8 @@ public class WarehouseServiceImpl implements WarehouseService {
                     }else{
                         nextHop.setParentHop(warehouseRepository.save(warehouse));
                     }
-
+                    nextHop.getHop().getLocationCoordinates().setCoordinates();
+                    warehouse.getLocationCoordinates().setCoordinates();
                     GeoCoordinateEntity nextHopCoordinates = geoCoordinateRepository.save(nextHop.getHop().getLocationCoordinates());
                     nextHop.getHop().getLocationCoordinates().setId(nextHopCoordinates.getId());
                     GeoCoordinateEntity parentHopCoordinates = geoCoordinateRepository.save(warehouse.getLocationCoordinates());
@@ -126,13 +130,18 @@ public class WarehouseServiceImpl implements WarehouseService {
                 warehouseRepository.save(warehouse);
             } else if (toCheck.getHopType().equals("truck")) {
                 TruckEntity truck = (TruckEntity) toCheck;
+
+                truck.setRegionGeo(bingEncodingProxy.getRegionGeo(truck.getRegionGeoJson()));
                 validator.validate(truck);
                 TruckEntity checkIfExists = truckRepository.findByNumberPlate(truck.getNumberPlate());
                 if(checkIfExists == null) {
                     truckRepository.save(truck);
+                }else {
+                    System.out.println(checkIfExists.getRegionGeo());
                 }
             } else if (toCheck.getHopType().equals("transferwarehouse")) {
                 TransferwarehouseEntity transferwarehouse = (TransferwarehouseEntity) toCheck;
+                transferwarehouse.setRegionGeo(bingEncodingProxy.getRegionGeo(transferwarehouse.getRegionGeoJson()));
                 validator.validate(transferwarehouse);
                 TransferwarehouseEntity checkIfExists = transferwarehouseRepository.findByLogisticsPartner(transferwarehouse.getLogisticsPartner());
                 if(checkIfExists == null) {

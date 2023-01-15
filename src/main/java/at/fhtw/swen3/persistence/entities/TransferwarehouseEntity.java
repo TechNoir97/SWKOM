@@ -1,5 +1,7 @@
 package at.fhtw.swen3.persistence.entities;
 
+import org.springframework.data.geo.Polygon;
+
 import javax.persistence.*;
 
 @Entity(name = "Transferwarehouse")
@@ -13,6 +15,8 @@ public class TransferwarehouseEntity extends HopEntity{
     private String regionGeoJson;
     private String logisticsPartner;
     private String logisticsPartnerUrl;
+
+    private Polygon regionGeo;
 
     public String getLogisticsPartner() {
         return logisticsPartner;
@@ -33,5 +37,13 @@ public class TransferwarehouseEntity extends HopEntity{
     }
     public void setRegionGeoJson(String regionGeoJson) {
         this.regionGeoJson = regionGeoJson;
+    }
+
+    public Polygon getRegionGeo() {
+        return regionGeo;
+    }
+
+    public void setRegionGeo(Polygon regionGeo) {
+        this.regionGeo = regionGeo;
     }
 }
