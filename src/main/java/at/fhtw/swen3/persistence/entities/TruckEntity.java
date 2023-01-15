@@ -10,6 +10,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
+import org.springframework.data.geo.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 @Entity(name = "Truck")
@@ -22,6 +23,10 @@ public class TruckEntity extends HopEntity{
     @Column(columnDefinition = "text")
     private String regionGeoJson;
     private String numberPlate;
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "regionGeo", nullable = false)
+    private Polygon regionGeo;
 
     public String getRegionGeoJson() {
         return regionGeoJson;
@@ -38,4 +43,18 @@ public class TruckEntity extends HopEntity{
     public void setNumberPlate(String numberPlate) {
         this.numberPlate = numberPlate;
     }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    public Polygon getRegionGeo() {
+        return regionGeo;
+    }
+
+    public void setRegionGeo(Polygon regionGeo) {
+        this.regionGeo = regionGeo;
+    }
+
 }

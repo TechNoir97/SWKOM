@@ -8,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ParcelApiControllerTest {
 
-    @BeforeAll
-    void setup(){
+    /*@BeforeAll
+    static void setup(){
         String trackingID = "GNL9PUKKR";
 
-    }
+    }*/
     @Test
-    void reportParcelDelivery(String trackingID) {
+    void reportParcelDelivery() {
 
     }
 

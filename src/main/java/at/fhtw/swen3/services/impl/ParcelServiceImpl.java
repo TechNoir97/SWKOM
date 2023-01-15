@@ -5,9 +5,7 @@ import at.fhtw.swen3.persistence.entities.GeoCoordinateEntity;
 import at.fhtw.swen3.persistence.entities.HopArrivalEntity;
 import at.fhtw.swen3.persistence.entities.ParcelEntity;
 import at.fhtw.swen3.persistence.entities.RecipientEntity;
-import at.fhtw.swen3.persistence.repositories.GeoCoordinateRepository;
-import at.fhtw.swen3.persistence.repositories.ParcelRepository;
-import at.fhtw.swen3.persistence.repositories.RecipientRepository;
+import at.fhtw.swen3.persistence.repositories.*;
 import at.fhtw.swen3.services.BLException;
 import at.fhtw.swen3.services.ParcelService;
 import at.fhtw.swen3.services.dto.NewParcelInfo;
@@ -29,10 +27,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ParcelServiceImpl implements ParcelService {
+    private final WarehouseRepository warehouseRepository;
     private final ParcelRepository parcelRepo;
     private final RecipientRepository recipientRepo;
     private final GeoCoordinateRepository geoCoordinateRepository;
     private final Validator validator;
+
+    private final HopRepository hopRepository;
+
+    private final HopArrivalRepository hopArrivalRepository;
 
     @Override
     public NewParcelInfo submitNewParcel(ParcelEntity newParcel) throws BLException {
@@ -48,7 +51,15 @@ public class ParcelServiceImpl implements ParcelService {
         GeoCoordinateEntity recipientCoordinates = bingEncodingProxy.encodeAddress(newParcel.getRecipient());
         GeoCoordinateEntity senderCoordinates = bingEncodingProxy.encodeAddress(newParcel.getSender());
 
+        //Get the prediction of the future Hops
+        PathPredictionService pathPredictionService = new PathPredictionService(hopRepository, warehouseRepository);
+        List<HopArrivalEntity> futureHops = (pathPredictionService.getFutureHops(senderCoordinates, recipientCoordinates));
+
         //Save the data into the database
+        for(HopArrivalEntity entity : futureHops){
+            hopArrivalRepository.save(entity);
+            newParcel.getFutureHops().add(entity);
+        }
 
         RecipientEntity checkIfRecipExists = recipientRepo.findByName(newParcel.getRecipient().getName());
         RecipientEntity checkIfSendExists = recipientRepo.findByName(newParcel.getSender().getName());
@@ -66,6 +77,11 @@ public class ParcelServiceImpl implements ParcelService {
         }else{
             newParcel.setSender(recipientRepo.findByName(checkIfSendExists.getName()));
         }
+
+
+
+
+        newParcel.setState(ParcelEntity.StateEnum.PICKUP);
         parcelRepo.save(newParcel);
         NewParcelInfo newParcelInfo = new NewParcelInfo();
         newParcelInfo.setTrackingId(newParcel.getTrackingId());

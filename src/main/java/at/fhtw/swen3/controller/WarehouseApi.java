@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @javax.annotation.Generated(value = "at.fhtw.swen3.codegen.v3.generators.java.SpringCodegen", date = "2022-09-18T11:41:55.463Z[GMT]")
 @Validated
@@ -38,7 +39,7 @@ public interface WarehouseApi {
     @RequestMapping(value = "/warehouse",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Warehouse> exportWarehouses();
+    ResponseEntity<List<Hop>> exportWarehouses();
 
 
     @Operation(summary = "Get a certain warehouse or truck by code", description = "", tags={ "warehouse-management" })

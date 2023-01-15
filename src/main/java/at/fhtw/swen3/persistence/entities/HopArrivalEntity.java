@@ -23,7 +23,6 @@ public class HopArrivalEntity {
 
     @ManyToOne
     @JoinColumn
-    @NotNull
     private ParcelEntity parcel;
 
     public OffsetDateTime getDateTime() {
